@@ -10,9 +10,11 @@ antigen bundle colored-man-pages;
 antigen bundle colorize;
 antigen bundle cp;
 antigen bundle wd;
+export NVM_AUTO_USE=true
+antigen bundle lukechilds/zsh-nvm;
 
 # Load the theme.
-antigen theme theunraveler;
+antigen theme ys;
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -23,7 +25,7 @@ antigen apply
 # Config
 export DISABLE_AUTO_TITLE="true"
 export COMPLETION_WAITING_DOTS="true"
-export EDITOR="atom"
+export EDITOR="code"
 
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
