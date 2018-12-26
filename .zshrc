@@ -12,6 +12,7 @@ antigen bundle cp;
 antigen bundle wd;
 export NVM_AUTO_USE=true
 antigen bundle lukechilds/zsh-nvm;
+antigen bundle $HOME/.oh-my-zsh/custom
 
 # Load the theme.
 antigen theme ys;
@@ -25,7 +26,10 @@ antigen apply
 # Config
 export DISABLE_AUTO_TITLE="true"
 export COMPLETION_WAITING_DOTS="true"
-export EDITOR="code"
+export EDITOR="vim"
+
+# tmuxinator completion & alias
+source ~/.bin/tmuxinator.zsh
 
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
