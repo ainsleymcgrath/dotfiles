@@ -47,7 +47,7 @@ cancel()
 
 print-help()
 {
-  printf "\nSalomon Smeke Dotfiles Setup\n";
+  printf "\nAinsley McGrath Dotfiles Setup\n";
   printf "\nCommands:\n";
   for opt in "${ACTIONS[@]}"; do
     printf "\t%s\n" "${opt}";
