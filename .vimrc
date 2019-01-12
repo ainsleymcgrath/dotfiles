@@ -9,7 +9,6 @@ Plugin 'VundleVim/Vundle.vim' " vundle must manage itself
 
 " look/feel
 Plugin 'itchyny/lightline.vim'
-Plugin 'noahfrederick/vim-noctu'
 Plugin 'morhetz/gruvbox'
 
 " general utils
@@ -21,12 +20,14 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'mhinz/vim-signify'
+Plugin 'zxqfl/tabnine-vim'
+Plugin 'mattn/emmet-vim'
 
 " js
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'prettier/vim-prettier'
-Plugin 'leshill/vim-json'
+Plugin 'elzr/vim-json'
 
 " python
 Plugin 'ambv/black'
@@ -81,10 +82,14 @@ let NERDTreeShowHidden=1
 set splitright
 set splitbelow
 
-" autoformatting
+" javasdcript autoformatting
 let g:prettier#quickfix_enabled = 0 
 let g:prettier#autoformat = 0 " format when changing, saving, or leaving insert mode
-autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+
+" python autoformatting
 autocmd BufWritePre *.py execute ':Black' 
 
+" yaml autoformatting
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
