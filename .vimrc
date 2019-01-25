@@ -50,7 +50,7 @@ set expandtab " use spaces instead of tabs.
 set smarttab " let's tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround " tab / shifting moves to closest tabstop.
 set autoindent " Match indents on new lines.
-set smartindent " Intellegently dedent / indent new lines based on rules.
+set cindent " Intellegently dedent / indent new lines based on rules.
 
 " mappings
 noremap <C-e> :NERDTreeToggle<CR>
@@ -77,6 +77,7 @@ set background=dark
 set laststatus=2
 set noshowmode " because lightline takes care of it!
 let NERDTreeShowHidden=1
+set cursorline
 
 " more sensible splits
 set splitright
@@ -84,12 +85,17 @@ set splitbelow
 
 " javasdcript autoformatting
 let g:prettier#quickfix_enabled = 0 
-let g:prettier#autoformat = 0 " format when changing, saving, or leaving insert mode
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+let g:prettier#autoformat = 0 
+let g:prettier#config#single_quote = 'false'
+let g:prettier#config#bracket_spacing = 'true'
+autocmd BufWritePre,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+autocmd FileType *.js,*.jsx,*.json,*.jsonp,*.css,*.scss,*.html setlocal shiftwidth=2
 
 " python autoformatting
-autocmd BufWritePre *.py execute ':Black' 
+autocmd BufWritePre,InsertLeave *.py execute ':Black' 
+autocmd FileType *.py setlocal shiftwidth=4
 
 " yaml autoformatting
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType yaml setlocal shiftwidth=2
+
 
