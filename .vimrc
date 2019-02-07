@@ -19,9 +19,11 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-fugitive'
 Plugin 'mhinz/vim-signify'
 Plugin 'zxqfl/tabnine-vim'
 Plugin 'mattn/emmet-vim'
+Plugin 'w0rp/ale'
 
 " js
 Plugin 'pangloss/vim-javascript'
@@ -34,9 +36,6 @@ Plugin 'ambv/black'
 
 " elixir
 Plugin 'elixir-editors/vim-elixir'
-
-" ale [linter]-- see |ale-related| below
-Plugin 'w0rp/ale' " TODO: https://github.com/w0rp/ale#2ii-fixing
 
 call vundle#end() " required
 filetype plugin indent on " required
@@ -55,6 +54,8 @@ set cindent " Intellegently dedent / indent new lines based on rules.
 " mappings
 noremap <C-e> :NERDTreeToggle<CR>
 noremap <C-p> :Files<CR>
+noremap at :ALEToggle
+noremap st :SignifyToggle
 
 " backups & swaps -- who cares!
 set nobackup 
