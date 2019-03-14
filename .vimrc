@@ -37,6 +37,9 @@ Plugin 'ambv/black'
 " elixir
 Plugin 'elixir-editors/vim-elixir'
 
+" elm
+Plugin 'ElmCast/elm-vim'
+
 call vundle#end() " required
 filetype plugin indent on " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -52,10 +55,14 @@ set autoindent " Match indents on new lines.
 set cindent " Intellegently dedent / indent new lines based on rules.
 
 " mappings
+let mapleader=' '
+
 noremap <C-e> :NERDTreeToggle<CR>
 noremap <C-p> :Files<CR>
-noremap at :ALEToggle
-noremap st :SignifyToggle
+noremap <C-l> :Ag<CR>
+noremap <leader>at :ALEToggle<CR>
+noremap <leader>st :SignifyToggle<CR>
+noremap <leader>ht :nohlsearch<CR>
 
 " backups & swaps -- who cares!
 set nobackup 
