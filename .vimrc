@@ -10,6 +10,7 @@ Plugin 'VundleVim/Vundle.vim' " vundle must manage itself
 " look/feel
 Plugin 'itchyny/lightline.vim'
 Plugin 'morhetz/gruvbox'
+Plugin 'google/vim-searchindex'
 
 " general utils
 Plugin 'scrooloose/nerdtree'
@@ -24,15 +25,18 @@ Plugin 'mhinz/vim-signify'
 Plugin 'zxqfl/tabnine-vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'w0rp/ale'
+Plugin 'vim-vdebug/vdebug'
 
 " js
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'prettier/vim-prettier'
 Plugin 'elzr/vim-json'
+Plugin 'jeetsukumaran/vim-pythonsense'
 
 " python
 Plugin 'ambv/black'
+Plugin 'davidhalter/jedi-vim'
 
 " elixir
 Plugin 'elixir-editors/vim-elixir'
@@ -83,9 +87,34 @@ set number " line numbers
 colorscheme gruvbox 
 set background=dark
 set laststatus=2
-set noshowmode " because lightline takes care of it!
 let NERDTreeShowHidden=1
 set cursorline
+set noshowmode " because lightline takes care of it!
+
+" for reporting ale errors in the statusline
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+let g:lightline = {
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'linterstatus' ] ]
+    \ },
+    \ 'component_function': {
+    \   'gitbranch': 'fugitive#head',
+    \   'linterstatus': 'LinterStatus'
+    \ },
+    \ }
 
 " more sensible splits
 set splitright
