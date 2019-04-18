@@ -1,1 +1,6 @@
 .tmux/
+.ansible/
+.aws/
+.*pass
+*.pem
+.zsh_local_after
