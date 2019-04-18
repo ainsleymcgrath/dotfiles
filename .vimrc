@@ -25,7 +25,6 @@ Plugin 'mhinz/vim-signify'
 Plugin 'zxqfl/tabnine-vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'w0rp/ale'
-Plugin 'vim-vdebug/vdebug'
 
 " js
 Plugin 'pangloss/vim-javascript'
@@ -37,12 +36,16 @@ Plugin 'jeetsukumaran/vim-pythonsense'
 " python
 Plugin 'ambv/black'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'vim-python/python-syntax'
 
 " elixir
 Plugin 'elixir-editors/vim-elixir'
 
 " elm
 Plugin 'ElmCast/elm-vim'
+
+" ansible
+Plugin 'pearofducks/ansible-vim'
 
 call vundle#end() " required
 filetype plugin indent on " required
@@ -67,6 +70,7 @@ noremap <C-l> :Ag<CR>
 noremap <leader>at :ALEToggle<CR>
 noremap <leader>st :SignifyToggle<CR>
 noremap <leader>ht :nohlsearch<CR>
+noremap <Leader>b :Buffers<CR> 
 
 " backups & swaps -- who cares!
 set nobackup 
@@ -90,6 +94,11 @@ set laststatus=2
 let NERDTreeShowHidden=1
 set cursorline
 set noshowmode " because lightline takes care of it!
+
+let g:python_highlight_string_formatting=1
+let g:python_highlight_string_format=1
+let g:python_highlight_string_templates=1
+let g:python_highlight_builtins=1
 
 " for reporting ale errors in the statusline
 function! LinterStatus() abort
@@ -134,5 +143,5 @@ autocmd FileType *.py setlocal shiftwidth=4
 
 " yaml autoformatting
 autocmd FileType yaml setlocal shiftwidth=2
-
+autocmd BufRead,BufNewFile **/server/*.yml setlocal ft=yaml.ansible
 
