@@ -95,10 +95,15 @@ let NERDTreeShowHidden=1
 set cursorline
 set noshowmode " because lightline takes care of it!
 
+" python syntax stuff
 let g:python_highlight_string_formatting=1
 let g:python_highlight_string_format=1
 let g:python_highlight_string_templates=1
 let g:python_highlight_builtins=1
+
+" python linting stuff
+let g:ale_flake8_options = '--max-line-length=121'
+let g:ale_pylint_options = '--max-line-length=121'
 
 " for reporting ale errors in the statusline
 function! LinterStatus() abort
