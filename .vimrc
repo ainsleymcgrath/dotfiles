@@ -9,7 +9,7 @@ Plugin 'VundleVim/Vundle.vim' " vundle must manage itself
 
 " look/feel
 Plugin 'itchyny/lightline.vim'
-Plugin 'morhetz/gruvbox'
+Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'google/vim-searchindex'
 
 " general utils
@@ -88,18 +88,15 @@ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 
 " look / feel
 set number " line numbers
-colorscheme gruvbox 
-set background=dark
+colorscheme PaperColor 
+set background=light
 set laststatus=2
 let NERDTreeShowHidden=1
 set cursorline
 set noshowmode " because lightline takes care of it!
 
 " python syntax stuff
-let g:python_highlight_string_formatting=1
-let g:python_highlight_string_format=1
-let g:python_highlight_string_templates=1
-let g:python_highlight_builtins=1
+let g:python_highlight_all=1
 
 " python linting stuff
 let g:ale_flake8_options = '--max-line-length=121'
@@ -120,6 +117,7 @@ function! LinterStatus() abort
 endfunction
 
 let g:lightline = {
+    \ 'colorscheme': 'PaperColor',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'linterstatus' ] ]

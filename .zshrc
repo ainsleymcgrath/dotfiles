@@ -15,7 +15,7 @@ antigen bundle lukechilds/zsh-nvm;
 antigen bundle $HOME/.oh-my-zsh/custom
 
 # Load the theme.
-antigen theme ys;
+antigen theme denysdovhan/spaceship-prompt;
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
