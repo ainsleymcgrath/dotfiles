@@ -3,4 +3,5 @@
 .aws/
 .*pass
 *.pem
-.zsh_local_after
+.zshrc_local_after
+.gitconfig

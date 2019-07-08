@@ -1,7 +1,0 @@
-[user]
-  name = Ainsley McGrath
-  email = mcgrath.ainsley@gmail.com
-
-[alias]
-  # See a tree structure
-  tree = log --oneline --decorate --all --graph
