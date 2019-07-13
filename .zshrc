@@ -27,6 +27,7 @@ antigen apply
 export DISABLE_AUTO_TITLE="true"
 export COMPLETION_WAITING_DOTS="true"
 export EDITOR="vim"
+export BAT_THEME="GitHub"
 
 # tmuxinator completion & alias
 source ~/.bin/tmuxinator.zsh
@@ -35,3 +36,5 @@ source ~/.bin/tmuxinator.zsh
 if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

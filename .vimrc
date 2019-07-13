@@ -67,6 +67,7 @@ let mapleader=' '
 noremap <C-e> :NERDTreeToggle<CR>
 noremap <C-p> :Files<CR>
 noremap <C-l> :Ag<CR>
+noremap <leader>l :Ag!<CR>
 noremap <leader>at :ALEToggle<CR>
 noremap <leader>st :SignifyToggle<CR>
 noremap <leader>ht :nohlsearch<CR>
@@ -84,7 +85,18 @@ set incsearch " live incremental searching
 set showmatch " live match highlighting
 set hlsearch " highlight matches
 set gdefault " use the `g` flag by default.
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+
+" and also more insane
+let $FZF_DEFAULT_COMMAND = 'ag --ignore .git -l -g ""'
+let $BAT_THEME = 'GitHub'
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('right:50%')
+  \                         : fzf#vim#with_preview('right:50%'),
+  \                 <bang>0)
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%'), <bang>0)
+set rtp+=/usr/local/opt/fzf
 
 " look / feel
 set number " line numbers
