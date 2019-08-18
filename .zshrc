@@ -32,9 +32,11 @@ export BAT_THEME="GitHub"
 # tmuxinator completion & alias
 source ~/.bin/tmuxinator.zsh
 
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
