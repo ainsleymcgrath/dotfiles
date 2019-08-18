@@ -14,7 +14,7 @@ Config options:
 from pathlib import Path
 import subprocess
 
-HOME_DIRECTORY = Path.home()
+HOME = Path.home()
 WORKING_DIRECTORY = Path.cwd()
 
 HOMEBREW_INSTALL_SCRIPT = subprocess.run(
@@ -29,10 +29,7 @@ HOMEBREW_INSTALL_SCRIPT = subprocess.run(
 INSTALL_ITEMS = {
     "brew": {"install_command": ["/usr/bin/ruby", "-e", HOMEBREW_INSTALL_SCRIPT]},
     "getantibody/tap/antibody": {},
-    "zsh": {  # two for one: docs say to do both at once
-        "dotfile": ".zshrc",
-        "post_install": ["chsh", "-s", "/bin/zsh"],
-    },
+    "zsh": {"dotfile": ".zshrc", "post_install": ["chsh", "-s", "/bin/zsh"]},
     "zsh-completions": {},
     "tmux": {"dotfile": ".tmux.conf"},
     "tpm": {
@@ -40,22 +37,26 @@ INSTALL_ITEMS = {
             "git",
             "clone",
             "https://github.com/tmux-plugins/tpm",
-            "~/.tmux/plugins/tpm",
+            Path(HOME, ".tmux", "plugins", "tpm"),
         ]
     },
     "nvim": {
         "dotfile": "init.vim",
-        "symlink_loc": "~/.config/nvim",
+        "symlink_loc": Path(HOME, ".config", "nvim"),
         "post_install": [
-            ["python3", "-m", "venv", "~/.config/nvim/neovim_venv"],
-            ["~/.config/nvim/neovim_venv/bin/python", "install", "neovim"],
+            ["python3", "-m", "venv", Path(HOME, ".config", "nvim", "neovim_venv")],
+            [
+                Path(HOME, ".config", "nvim", "neovim_venv", "bin", "pip3"),
+                "install",
+                "neovim",
+            ],
         ],
     },
     "vim-plug": {
         "install_command": [
             "curl",
             "-fLo",
-            "~/.local/share/nvim/site/autoload/plug.vim",
+            Path(HOME, ".local", "share", "nvim", "site", "autoload", "plug.vim"),
             "--create-dirs",
             "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim",
         ]
@@ -108,7 +109,7 @@ def maybe_do_symlink(config_dict):
             symlink_loc = Path(config_dict["symlink_loc"])
             subprocess.run(["ln", "-s", dotfile_loc], cwd=symlink_loc)
         except KeyError:
-            subprocess.run(["ln", "-s", dotfile_loc], cwd=HOME_DIRECTORY)
+            subprocess.run(["ln", "-s", dotfile_loc], cwd=HOME)
 
     except KeyError:
         pass
