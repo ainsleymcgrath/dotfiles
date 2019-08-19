@@ -115,8 +115,51 @@ def maybe_do_symlink(config_dict):
         pass
 
 
+def is_app(name):
+    """Predicate for existence of gui-ish mac apps"""
+
+    application_support = Path(HOME, "Library", "Application Support")
+    is_application = subprocess.run(
+        ["find", application_support, "-name", name], capture_output=True
+    )
+
+    try:
+        is_application.check_returncode()
+        return True
+    except subprocess.CalledProcesserror:
+        return False
+
+
+def is_executable(name):
+    """Predicate for existence executables"""
+
+    is_executable = subprocess.run(["which", name], capture_output=True)
+
+    try:
+        is_executable.check_returncode()
+        return True
+    except subprocess.CalledProcesserror:
+        return False
+
+
+def is_local_cask(name):
+    """Predicate for existence of local casks"""
+
+    is_local_cask = subprocess.run(["brew", "search", "--casks", name])
+
+    try:
+        is_local_cask.check_returncode()
+        return True
+    except subprocess.CalledProcesserror:
+        return False
+
+
 if __name__ == "__main__":
     for name, config in INSTALL_ITEMS.items():
+        if is_app(name) or is_executable(name) or is_local_cask(name):
+            print(f"Skipping {name}. It appears to be here already")
+            continue
+
         do_install(name, config)
         maybe_do_post_install(config)
         maybe_do_symlink(config)
