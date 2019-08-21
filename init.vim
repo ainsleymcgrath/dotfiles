@@ -29,29 +29,14 @@ Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'mattn/emmet-vim'
 
 " python
-Plug 'ambv/black', { 'for': 'python' }
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+Plug 'psf/black', { 'for': 'python' }
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins', 'for': 'python' }
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 
 " ansible
 Plug 'pearofducks/ansible-vim'
 
 call plug#end()
-
-" look / feel
-set number " line numbers
-set background=light
-set laststatus=2
-set cursorline
-
-colorscheme PaperColor
-" colors selected from https://github.com/NLKNguyen/papercolor-theme/blob/master/colors/PaperColor.vim#L40-L57
-hi semshiImported ctermfg=25 cterm=bold
-hi semshiSelf ctermfg=31 cterm=bold
-hi semshiAttribute ctermfg=238
-hi semshiGlobal ctermfg=238 cterm=bold
-hi semshiBuiltin ctermfg=91
-hi semshiSelected ctermbg=190 ctermfg=28 cterm=bold
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 
 " da basics
 filetype plugin indent on
@@ -108,7 +93,17 @@ let NERDTreeShowHidden=1
 set cursorline
 set noshowmode " because lightline takes care of it!
 
+" colors selected from https://github.com/NLKNguyen/papercolor-theme/blob/master/colors/PaperColor.vim#L40-L57
+hi semshiImported ctermfg=25 cterm=bold
+hi semshiSelf ctermfg=31 cterm=bold
+hi semshiAttribute ctermfg=238
+hi semshiGlobal ctermfg=238 cterm=bold
+hi semshiBuiltin ctermfg=91
+hi semshiSelected ctermbg=190 ctermfg=28 cterm=bold
+hi semshiParameter ctermfg=31
+
 " python linting stuff
+let g:semshi#error_sign = v:false " let ale do it
 let g:ale_flake8_options = '--max-line-length=121'
 let g:ale_pylint_options = '--max-line-length=121'
 
