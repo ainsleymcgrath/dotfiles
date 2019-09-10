@@ -1,5 +1,5 @@
-let g:python_host_prog = '~/.config/nvim/neovim_venv/bin/python3'
-let g:python3_host_prog = '~/.config/nvim/neovim_venv/bin/python3'
+let g:python_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')
+let g:python3_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')
 
 call plug#begin('~/.vim/plugged')
 
@@ -18,8 +18,20 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
-Plug 'zxqfl/tabnine-vim'
 Plug 'w0rp/ale'
+Plug 'majutsushi/tagbar'
+Plug 'qpkorr/vim-bufkill'
+
+"completions
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'zxqfl/tabnine-vim'
+Plug 'tbodt/deoplete-tabnine'
 
 " js / web standards
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -32,6 +44,9 @@ Plug 'mattn/emmet-vim'
 Plug 'psf/black', { 'for': 'python' }
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins', 'for': 'python' }
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'deoplete-plugins/deoplete-jedi', { 'for': 'python' }
+Plug 'jeetsukumaran/vim-pythonsense', { 'for': 'python' }
+
 
 " ansible
 Plug 'pearofducks/ansible-vim'
@@ -47,10 +62,16 @@ set shiftround " tab / shifting moves to closest tabstop.
 set autoindent " Match indents on new lines.
 set cindent " Intellegently dedent / indent new lines based on rules.
 
+" plugin-related
+let g:deoplete#auto_complete_delay = 100
+let g:deoplete#enable_at_startup = 1
+let g:jedi#completions_enabled = 0 " deoplete handles it
+
 " mappings
 let mapleader=' '
 
 noremap <C-e> :NERDTreeToggle<CR>
+noremap <C-t> :TagbarToggle<CR>
 noremap <C-p> :Files<CR>
 noremap <C-l> :Ag<CR>
 noremap <leader>l :Ag!<CR>
@@ -142,7 +163,7 @@ let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
 let g:prettier#config#single_quote = 'false'
 let g:prettier#config#bracket_spacing = 'true'
-autocmd BufWritePre,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+" autocmd BufWritePre,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 autocmd FileType *.js,*.jsx,*.json,*.jsonp,*.css,*.scss,*.html setlocal shiftwidth=2
 
 " python autoformatting
