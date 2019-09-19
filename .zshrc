@@ -10,7 +10,6 @@ antigen bundle colored-man-pages;
 antigen bundle colorize;
 antigen bundle cp;
 antigen bundle wd;
-export NVM_AUTO_USE=true
 antigen bundle lukechilds/zsh-nvm;
 antigen bundle $HOME/.oh-my-zsh/custom
 
@@ -26,7 +25,7 @@ antigen apply
 # Config
 export DISABLE_AUTO_TITLE="true"
 export COMPLETION_WAITING_DOTS="true"
-export EDITOR="vim"
+export EDITOR="nvim"
 export BAT_THEME="GitHub"
 
 # tmuxinator completion & alias

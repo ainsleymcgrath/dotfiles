@@ -18,11 +18,13 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'majutsushi/tagbar'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'qpkorr/vim-bufkill'
 
 "completions
+" Plug 'zxqfl/tabnine-vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -30,8 +32,7 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'zxqfl/tabnine-vim'
-Plug 'tbodt/deoplete-tabnine'
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
 " js / web standards
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -63,7 +64,7 @@ set autoindent " Match indents on new lines.
 set cindent " Intellegently dedent / indent new lines based on rules.
 
 " plugin-related
-let g:deoplete#auto_complete_delay = 100
+let g:deoplete#auto_complete_delay = 100 " to avoid battle with Semshi
 let g:deoplete#enable_at_startup = 1
 let g:jedi#completions_enabled = 0 " deoplete handles it
 
@@ -74,11 +75,14 @@ noremap <C-e> :NERDTreeToggle<CR>
 noremap <C-t> :TagbarToggle<CR>
 noremap <C-p> :Files<CR>
 noremap <C-l> :Ag<CR>
-noremap <leader>l :Ag!<CR>
+noremap <leader>ll :Ag!<CR>
 noremap <leader>at :ALEToggle<CR>
 noremap <leader>st :SignifyToggle<CR>
 noremap <leader>ht :nohlsearch<CR>
-noremap <Leader>b :Buffers<CR>
+noremap <Leader>bf :Buffers<CR>
+noremap <Leader>tg :Tags<CR>
+noremap <Leader>bt :BTags<CR>
+noremap <Leader>gsb :GFiles?<CR>
 
 " backups & swaps -- who cares!
 set nobackup
@@ -127,6 +131,11 @@ hi semshiParameter ctermfg=31
 let g:semshi#error_sign = v:false " let ale do it
 let g:ale_flake8_options = '--max-line-length=121'
 let g:ale_pylint_options = '--max-line-length=121'
+
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'python': ['flake8', 'pylint'],
+\ }
 
 " for reporting ale errors in the statusline
 function! LinterStatus() abort
