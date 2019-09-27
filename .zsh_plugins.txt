@@ -1,0 +1,22 @@
+# oh my zsh pre-requisites.
+robbyrussell/oh-my-zsh path:lib
+
+# Color/highlighting related things
+zsh-users/zsh-syntax-highlighting
+chrissicool/zsh-256color
+zuxfoucault/colored-man-pages_mod
+zpm-zsh/colorize
+
+# Completion
+robbyrussell/oh-my-zsh path:plugins/gitfast
+
+# Human
+MichaelAquilina/zsh-you-should-use
+
+# Theme
+denysdovhan/spaceship-prompt
+
+# Neat
+robbyrussell/oh-my-zsh path:plugins/wd
+robbyrussell/oh-my-zsh path:plugins/git
+
