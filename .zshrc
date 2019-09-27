@@ -1,33 +1,33 @@
-# Antigen
-source ~/antigen.zsh;
+# Enable completions
+autoload -Uz compinit;
+if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ~/.zcompdump) ]; then
+  compinit;
+else
+  compinit -C;
+fi
 
-# Load the oh-my-zsh's library.
-antigen use oh-my-zsh;
-antigen bundle git;
-antigen bundle github;
-antigen bundle command-not-found;
-antigen bundle colored-man-pages;
-antigen bundle colorize;
-antigen bundle cp;
-antigen bundle wd;
-export NVM_AUTO_USE=true
-antigen bundle lukechilds/zsh-nvm;
-antigen bundle $HOME/.oh-my-zsh/custom
+# Antibody
+source ~/.zsh_plugins.sh
 
-# Load the theme.
-antigen theme denysdovhan/spaceship-prompt;
-
-# Syntax highlighting bundle.
-antigen bundle zsh-users/zsh-syntax-highlighting
-
-# Tell antigen that you're done.
-antigen apply
+# # Eventually reload completions
+read < <( compinit );
 
 # Config
 export DISABLE_AUTO_TITLE="true"
 export COMPLETION_WAITING_DOTS="true"
-export EDITOR="vim"
+export EDITOR="nvim"
 export BAT_THEME="GitHub"
+
+# aliases
+alias c="clear"
+alias dotfiles="cd ~/dotfiles"
+alias wpy="which python"
+
+function muxrestart() {
+    tmuxinator stop $1
+    tmuxinator start $1
+}
+
 
 # tmuxinator completion & alias
 source ~/.bin/tmuxinator.zsh

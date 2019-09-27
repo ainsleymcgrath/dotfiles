@@ -5,3 +5,5 @@
 *.pem
 .zshrc_local_after
 .gitconfig
+.DS_Store
+tags
