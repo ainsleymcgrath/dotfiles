@@ -12,12 +12,14 @@ Config options:
 
 """
 from pathlib import Path
-import subprocess
+from shutil import which
+from os import symlink
+from subprocess import run, CalledProcessError
 
 HOME = Path.home()
 WORKING_DIRECTORY = Path.cwd()
 
-HOMEBREW_INSTALL_SCRIPT = subprocess.run(
+HOMEBREW_INSTALL_SCRIPT = run(
     [
         "curl",
         "-fsSL",
@@ -26,11 +28,19 @@ HOMEBREW_INSTALL_SCRIPT = subprocess.run(
     capture_output=True,
 ).stdout
 
+LOCALLY_INSTALLED_BREW_PACKAGES = run(
+    ["brew", "list"], capture_output=True, text=True
+).stdout.split("\n")
+
+LOCALLY_INSTALLED_BREW_CASKS = run(
+    ["brew", "cask", "list"], capture_output=True, text=True
+).stdout.split("\n")
+
 INSTALL_ITEMS = {
     "brew": {"install_command": ["/usr/bin/ruby", "-e", HOMEBREW_INSTALL_SCRIPT]},
-    "getantibody/tap/antibody": {},
     "zsh": {"dotfile": ".zshrc", "post_install": ["chsh", "-s", "/bin/zsh"]},
     "zsh-completions": {},
+    "getantibody/tap/antibody": {},
     "tmux": {"dotfile": ".tmux.conf"},
     "tpm": {
         "install_command": [
@@ -75,9 +85,9 @@ def do_install(install_item_name, config_dict):
 
     try:
         install_command = config_dict["install_command"]
-        subprocess.run(install_command)
+        run(install_command)
     except KeyError:
-        subprocess.run(["brew", "install", install_item_name])
+        run(["brew", "install", install_item_name])
 
 
 def maybe_do_post_install(config_dict):
@@ -89,11 +99,11 @@ def maybe_do_post_install(config_dict):
 
         if isinstance(post_install[0], list):
             for command in post_install:
-                subprocess.run(command)
+                run(command)
 
             return
 
-        subprocess.run(post_install)
+        run(post_install)
 
     except KeyError:
         pass
@@ -105,11 +115,14 @@ def maybe_do_symlink(config_dict):
 
     try:
         dotfile_loc = Path(WORKING_DIRECTORY, config_dict["dotfile"])
+        symlink_dest = (
+            Path(config_dict["symlink_loc"]) if "symlink_loc" in config_dict else HOME
+        )
+
         try:
-            symlink_loc = Path(config_dict["symlink_loc"])
-            subprocess.run(["ln", "-s", dotfile_loc], cwd=symlink_loc)
-        except KeyError:
-            subprocess.run(["ln", "-s", dotfile_loc], cwd=HOME)
+            symlink(dotfile_loc, symlink_dest)
+        except FileExistsError:
+            pass
 
     except KeyError:
         pass
@@ -119,47 +132,49 @@ def is_app(name):
     """Predicate for existence of gui-ish mac apps"""
 
     application_support = Path(HOME, "Library", "Application Support")
-    is_application = subprocess.run(
+    is_application = run(
         ["find", application_support, "-name", name], capture_output=True
     )
 
     try:
         is_application.check_returncode()
         return True
-    except subprocess.CalledProcesserror:
+    except CalledProcessError:
         return False
 
 
 def is_executable(name):
     """Predicate for existence executables"""
 
-    is_executable = subprocess.run(["which", name], capture_output=True)
+    is_executable = which(name)
 
-    try:
-        is_executable.check_returncode()
-        return True
-    except subprocess.CalledProcesserror:
-        return False
+    return bool(is_executable)
 
 
-def is_local_cask(name):
+def is_local_homebrew_package(name):
     """Predicate for existence of local casks"""
 
-    is_local_cask = subprocess.run(["brew", "search", "--casks", name])
+    return name in [*LOCALLY_INSTALLED_BREW_CASKS, *LOCALLY_INSTALLED_BREW_PACKAGES]
 
-    try:
-        is_local_cask.check_returncode()
-        return True
-    except subprocess.CalledProcesserror:
-        return False
+
+def do_antibody_bundle():
+    """https://getantibody.github.io/usage/#static-loading"""
+
+    run(
+        f"antibody bundle < {WORKING_DIRECTORY}/.zsh_plugins.txt > ~/.zsh_plugins.sh",
+        shell=True,
+    )
 
 
 if __name__ == "__main__":
+    do_antibody_bundle()
+
     for name, config in INSTALL_ITEMS.items():
-        if is_app(name) or is_executable(name) or is_local_cask(name):
+        maybe_do_symlink(config)
+
+        if is_app(name) or is_executable(name) or is_local_homebrew_package(name):
             print(f"Skipping {name}. It appears to be here already")
             continue
 
         do_install(name, config)
         maybe_do_post_install(config)
-        maybe_do_symlink(config)
