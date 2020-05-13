@@ -5,7 +5,8 @@ call plug#begin('~/.vim/plugged')
 
 " look/feel
 Plug 'itchyny/lightline.vim'
-Plug 'NLKNguyen/papercolor-theme'
+Plug 'arcticicestudio/nord-vim'
+Plug 'altercation/vim-colors-solarized'
 Plug 'google/vim-searchindex'
 
 " general utils
@@ -22,6 +23,7 @@ Plug 'dense-analysis/ale'
 Plug 'majutsushi/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'qpkorr/vim-bufkill'
+Plug 'justinmk/vim-sneak'
 
 "completions
 " Plug 'zxqfl/tabnine-vim'
@@ -42,8 +44,8 @@ Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'mattn/emmet-vim'
 
 " python
-Plug 'psf/black', { 'for': 'python' }
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins', 'for': 'python' }
+Plug 'psf/black', { 'for': 'python', 'tag': '19.10b0' }
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'deoplete-plugins/deoplete-jedi', { 'for': 'python' }
 Plug 'jeetsukumaran/vim-pythonsense', { 'for': 'python' }
@@ -55,18 +57,21 @@ Plug 'pearofducks/ansible-vim'
 call plug#end()
 
 " da basics
-filetype plugin indent on
+" filetype plugin indent on
 syntax on
-set expandtab " use spaces instead of tabs.
-set smarttab " let's tab key insert 'tab stops', and bksp deletes tabs.
+" set expandtab " use spaces instead of tabs.
+" set smarttab " let's tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround " tab / shifting moves to closest tabstop.
-set autoindent " Match indents on new lines.
 set cindent " Intellegently dedent / indent new lines based on rules.
 
 " plugin-related
-let g:deoplete#auto_complete_delay = 100 " to avoid battle with Semshi
+" let g:deoplete#auto_complete_delay = 100 " to avoid battle with Semshi
 let g:deoplete#enable_at_startup = 1
 let g:jedi#completions_enabled = 0 " deoplete handles it
+let g:tagbar_sort = 0 " hate that this isn't a default...
+let g:tagbar_width = 50
+let g:tagbar_zoomwidth = 0
+let g:tagbar_autofocus = 1
 
 " mappings
 let mapleader=' '
@@ -74,15 +79,21 @@ let mapleader=' '
 noremap <C-e> :NERDTreeToggle<CR>
 noremap <C-t> :TagbarToggle<CR>
 noremap <C-p> :Files<CR>
+noremap <C-P> :Files!<CR>
 noremap <C-l> :Ag<CR>
 noremap <leader>ll :Ag!<CR>
 noremap <leader>at :ALEToggle<CR>
+noremap ]a :ALENextWrap<CR>
+noremap [a :ALEPreviousWrap<CR>
+noremap ]A :ALEFirst<CR>
+noremap [A :ALELast<CR>
 noremap <leader>st :SignifyToggle<CR>
 noremap <leader>ht :nohlsearch<CR>
 noremap <Leader>bf :Buffers<CR>
 noremap <Leader>tg :Tags<CR>
 noremap <Leader>bt :BTags<CR>
-noremap <Leader>gsb :GFiles?<CR>
+noremap <Leader>gsb :GFiles!?<CR>
+noremap <leader>se :Semshi enable<CR>
 
 " backups & swaps -- who cares!
 set nobackup
@@ -99,33 +110,38 @@ set gdefault " use the `g` flag by default.
 
 " and also more insane
 let $FZF_DEFAULT_COMMAND = 'ag --ignore .git -l -g ""'
-let $BAT_THEME = 'GitHub'
+let $BAT_THEME = 'base16'
+"
+" add nice previews to :Ag and :Files
 command! -bang -nargs=* Ag
   \ call fzf#vim#ag(<q-args>,
   \                 <bang>0 ? fzf#vim#with_preview('right:50%')
   \                         : fzf#vim#with_preview('right:50%'),
   \                 <bang>0)
+
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%'), <bang>0)
+
 set rtp+=/usr/local/opt/fzf
 
 " look / feel
 set number " line numbers
-colorscheme PaperColor
+colorscheme Nord
 set background=light
 set laststatus=2
 let NERDTreeShowHidden=1
 set cursorline
 set noshowmode " because lightline takes care of it!
 
+" this is for light theme times (namely PaperColor)
 " colors selected from https://github.com/NLKNguyen/papercolor-theme/blob/master/colors/PaperColor.vim#L40-L57
-hi semshiImported ctermfg=25 cterm=bold
-hi semshiSelf ctermfg=31 cterm=bold
-hi semshiAttribute ctermfg=238
-hi semshiGlobal ctermfg=238 cterm=bold
-hi semshiBuiltin ctermfg=91
-hi semshiSelected ctermbg=190 ctermfg=28 cterm=bold
-hi semshiParameter ctermfg=31
+" hi semshiImported ctermfg=25 cterm=bold
+" hi semshiSelf ctermfg=31 cterm=bold
+" hi semshiAttribute ctermfg=238
+" hi semshiGlobal ctermfg=238 cterm=bold
+" hi semshiBuiltin ctermfg=91
+" hi semshiSelected ctermbg=190 ctermfg=28 cterm=bold
+" hi semshiParameter ctermfg=31
 
 " python linting stuff
 let g:semshi#error_sign = v:false " let ale do it
@@ -152,7 +168,7 @@ function! LinterStatus() abort
 endfunction
 
 let g:lightline = {
-    \ 'colorscheme': 'PaperColor',
+    \ 'colorscheme': 'nord',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'linterstatus' ] ]
