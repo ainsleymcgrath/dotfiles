@@ -14,6 +14,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -24,6 +25,7 @@ Plug 'majutsushi/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'qpkorr/vim-bufkill'
 Plug 'justinmk/vim-sneak'
+Plug 'hylang/vim-hy'
 
 "completions
 " Plug 'zxqfl/tabnine-vim'
@@ -111,6 +113,7 @@ set gdefault " use the `g` flag by default.
 " and also more insane
 let $FZF_DEFAULT_COMMAND = 'ag --ignore .git -l -g ""'
 let $BAT_THEME = 'base16'
+let g:ackprg = 'ag --ignore .git'
 "
 " add nice previews to :Ag and :Files
 command! -bang -nargs=* Ag
