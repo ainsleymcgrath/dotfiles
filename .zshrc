@@ -77,9 +77,6 @@ function muxrestart() {
     tmuxinator start $1
 }
 
-# tmuxinator completion & alias
-source ~/.bin/tmuxinator.zsh
-
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
