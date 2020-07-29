@@ -21,7 +21,6 @@ steps: |-
   For poetry, run
   curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
-
   Now, we symlink. Most stuff will link to $HOME, but there are exceptions.
 
   nvim is the oddball
@@ -36,7 +35,7 @@ steps: |-
   And finally, tmux
   {symlink} ./.tmux.conf ~/.tmux.conf
 
-  fzf, antibody, zsh, antibody, and neovim have some post-install stuff.
+  fzf, antibody, zsh, antibody, diff-so-fancy, and neovim have some post-install stuff.
 
   Set zsh as the default shell
   {zsh_post_install}
@@ -53,6 +52,9 @@ steps: |-
   Initialize antibody plugins
   {antibody_bundle_command}
 
+  Run the commands through the link for 'optimal' diffs
+  {diff_so_fancy_git_commands}
+
   Do the drag and drop thing for the terminal theme in this directory. Change font as well.
 
   Sick! This is the last step.
@@ -62,13 +64,14 @@ steps: |-
   
 knowns:
   - homebrew_install_command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-  - homebrew_packages: zsh zsh-completions getantibody/tap/antibody nvim the_silver_searcher fzf bat ripgrep tldr pyenv pyenv-virtualenv fd tmux tmuxinator reattach-to-user-namespace wget
-  - homebrew_casks: google-chrome firefox visual-studio-code typora homebrew/cask-fonts/font-iosevka
+  - homebrew_packages: zsh zsh-completions getantibody/tap/antibody nvim the_silver_searcher fzf bat ripgrep tldr pyenv pyenv-virtualenv fd tmux tmuxinator reattach-to-user-namespace wget exa pgcli diff-so-fancy ctags
+  - homebrew_casks: google-chrome firefox visual-studio-code typora homebrew/cask-fonts/font-iosevka rocket
   - clone_tpm: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   - install_vim_plug: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   - brew_post_install: $(brew --prefix)/opt/fzf/install
-  - nvim_post_install_make_venv: python3.8 -m venv ~/.config/neovim_venv
-  - nvim_post_install_add_package: ~/.config/neovim_venv/bin/pip3 install neovim
+  - nvim_post_install_make_venv: python3.8 -m venv ~/.config/nvim/neovim_venv
+  - nvim_post_install_add_package: ~/.config/nvim/neovim_venv/bin/pip3 install neovim
   - zsh_post_install: chsh -s /bin/zsh
   - symlink: ln -s
   - antibody_bundle_command: antibody bundle < ./.zsh_plugins.txt > ~/.zsh_plugins.sh
+  - diff_so_fancy_git_commands: https://github.com/so-fancy/diff-so-fancy#improved-colors-for-the-highlighted-bits

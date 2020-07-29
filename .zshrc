@@ -18,6 +18,7 @@ export COMPLETION_WAITING_DOTS="true"
 export EDITOR="nvim"
 export BAT_THEME="base16"
 export HISTCONTROL=ignoreboth:erasedups
+export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout reverse-list --preview '(bat --color=always --style=numbers --line-range :500 {} || exa -T --color=always {}) 2> /dev/null'"
 
 # python utils
 eval "$(pyenv init -)"
@@ -28,10 +29,14 @@ source $HOME/.poetry/env
 alias c="clear"
 alias wpy="which python"
 alias jno="jupyter notebook"
+alias pyma="python manage.py"
+alias po="poetry"
 alias txl="tmux ls"
 alias txk="tmux kill-session -t"
 alias l="exa -1a"
 alias ll="exa -la"
+alias soz=". ~/.zshrc"
+alias mux="tmuxinator"
 
 # 'list tree' : 
 # use exa to tree out directory completely or specify level in $1
@@ -63,13 +68,6 @@ function txn() {
     elif [[ -n ${1} ]]; then
         tmux new -s $1
     fi
-}
-
-# 'markdown'
-# create file with name $1 in $MARKDOWNS, if -o, open with system viewer
-function mrk() {
-    #TODO
-    echo
 }
 
 function muxrestart() {
