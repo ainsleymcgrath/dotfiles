@@ -22,14 +22,16 @@ export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout revers
 
 # python utils
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
 source $HOME/.poetry/env
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # aliases
 alias c="clear"
 alias wpy="which python"
 alias jno="jupyter notebook"
+alias ipy="ipython"
 alias pyma="python manage.py"
+alias pyact="pyenv activate"
 alias po="poetry"
 alias txl="tmux ls"
 alias txk="tmux kill-session -t"
@@ -59,14 +61,12 @@ function txa() {
 }
 
 # 'tmux new' :
-# $1 is optional session name, $2 is optional sessin pwd
+# new session with root dir of cwd $1 is optional session name
 function txn() {
     if [[ -z ${1} ]]; then
-        tmux new
-    elif [[ -n ${1} ]] && [[ -n ${2} ]]; then
-        tmux new -s $1 -c $2
-    elif [[ -n ${1} ]]; then
-        tmux new -s $1
+        tmux new -c $(pwd)
+    else 
+        tmux new -s $1 -c $(pwd)
     fi
 }
 
@@ -83,4 +83,8 @@ if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
 
+eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
+eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
+eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
+eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
 eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
