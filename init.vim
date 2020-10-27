@@ -30,17 +30,10 @@ Plug 'hylang/vim-hy'
 "completions
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-Plug 'ervandew/supertab'
 
 " js / web standards
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
@@ -49,35 +42,44 @@ Plug 'maxmellon/vim-jsx-pretty', { 'for': 'javascript' }
 Plug 'prettier/vim-prettier', { 'for': ['javascript', 'html', 'css', 'json'] }
 Plug 'elzr/vim-json', { 'for': 'json' }
 
-
 " python
 Plug 'psf/black', { 'for': 'python', 'tag': '19.10b0' }
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
-" Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-" Plug 'deoplete-plugins/deoplete-jedi', { 'for': 'python' }
-Plug 'jeetsukumaran/vim-pythonsense', { 'for': 'python' }
+Plug 'jeetsukumaran/vim-pythonsense', { 'for': 'python' }  " can CoC do it?
+Plug 'cespare/vim-toml'
 
 call plug#end()
 
 " da basics
-" filetype plugin indent on
+filetype plugin indent on
 syntax on
 set expandtab " use spaces instead of tabs.
-" set shiftround " tab / shifting moves to closest tabstop.
-" set cindent " Intellegently dedent / indent new lines based on rules.
 
-" plugin-related
-" let g:deoplete#enable_at_startup = 1
-" let g:jedi#completions_enabled = 0 " deoplete handles it
-" let  g:jedi#goto_stubs_command='' " i don't use this and it collides with Ferret
+" tagbar
 let g:tagbar_sort = 0 " hate that this isn't a default...
 let g:tagbar_width = 50
 let g:tagbar_zoomwidth = 0
 let g:tagbar_autofocus = 1
+
+let g:tagbar_type_javascript = {
+    \ 'ctagstype' : 'javascript',
+    \ 'kinds'     : [
+        \ 'A:Arrays',
+        \ 'C:Classes',
+        \ 'E:Exports',
+        \ 'F:Functions',
+        \ 'G:Generators',
+        \ 'I:Imports',
+        \ 'M:Methods',
+        \ 'P:Properties',
+        \ 'S:StyledComponents',
+        \ 'T:Tags',
+        \ 'V:Variables'
+    \ ]
+    \ }
+
+" bufkill
 let g:BufKillCreateMappings=0
-" scroll top down for completions
-let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
 " mappings
 let mapleader=' '
@@ -101,7 +103,7 @@ noremap <silent><expr> <leader>ht (&hls && v:hlsearch ? ':nohls' : ':set hls')."
 noremap <silent><expr> <leader>ln (&rnu ? ':set nornu' : ':set rnu')."\n"
 noremap <leader>se :Semshi enable<CR>
 
-" used below
+" maps to K
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -110,17 +112,46 @@ function! s:show_documentation()
   endif
 endfunction
 
+" coc maps
 nmap <silent> <leader>d <Plug>(coc-definition)
 nmap <silent> <leader>n <Plug>(coc-references)
+nmap <leader>r <Plug>(coc-rename)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-nnoremap <silent><nowait> <space>e  :<C-u>CocList -N -I diagnostics<cr>
-nnoremap <silent><nowait> <space>o  :<C-u>CocList -I -N outline<cr>
+nnoremap <silent><nowait> <space>e  :<C-u>CocList --no-resize diagnostics<cr>
+nnoremap <silent><nowait> <space>o  :<C-u>CocList --no-resize --auto-preview outline<cr>
 nnoremap <silent><nowait> <space>y  :<C-u>CocList yank<cr>
+nnoremap <silent><nowait> <space>a  :<C-u>CocList actions<cr>
 nnoremap <silent><nowait> <space>pyi  :<C-u>CocCommand python.setInterpreter<cr>
 noremap ]e <Plug>(coc-diagnostic-next-error)
 noremap [e <Plug>(coc-diagnostic-prev-error)
 noremap ]a <Plug>(coc-diagnostic-next)
 noremap [a <Plug>(coc-diagnostic-prev)
+
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" more coc [https://github.com/neoclide/coc.nvim#example-vim-configuration]
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+set updatetime=300
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
 
 " backups & swaps -- who cares!
 set nobackup
@@ -132,10 +163,10 @@ set ignorecase " case insensitive search
 set smartcase " If there are uppercase letters, become case-sensitive.
 set showmatch " live match highlighting
 set gdefault " use the `g` flag by default.
-
 " and also more insane
 let $FZF_DEFAULT_COMMAND = 'rg -l --files""'
 let $BAT_THEME = 'zenburn'
+let g:FerretAutojump=0
 
 set rtp+=/usr/local/opt/fzf
 
@@ -183,12 +214,9 @@ let g:lightline = {
 set splitright
 set splitbelow
 
-" javasdcript autoformatting
+" prettier
 let g:prettier#config#arrow_parens='avoid'
 let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
 let g:prettier#config#single_quote = 'true'
 let g:prettier#config#bracket_spacing = 'true'
-
-" YAML INDENTATION
-" autocmd FileType yaml setlocal <buffer> shiftwidth=2
