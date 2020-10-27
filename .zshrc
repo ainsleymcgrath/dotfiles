@@ -84,7 +84,3 @@ if [ -f ~/.zshrc_local_after ]; then
 fi
 
 eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
-eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
-eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
-eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
-eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
