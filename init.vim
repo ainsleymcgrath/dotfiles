@@ -86,6 +86,9 @@ let mapleader=' '
 
 inoremap jj <Esc>
 cnoremap jj <Esc>
+" exit terminal
+tnoremap <C-g> <C-\><C-n>  
+
 noremap <C-e> :NERDTreeToggle<CR>
 noremap <C-t> :TagbarToggle<CR>
 noremap <C-P> :Files!<CR>
