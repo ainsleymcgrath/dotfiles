@@ -117,15 +117,15 @@ nmap <silent> <leader>d <Plug>(coc-definition)
 nmap <silent> <leader>n <Plug>(coc-references)
 nmap <leader>r <Plug>(coc-rename)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-nnoremap <silent><nowait> <space>e  :<C-u>CocList --no-resize diagnostics<cr>
-nnoremap <silent><nowait> <space>o  :<C-u>CocList --no-resize --auto-preview outline<cr>
+nnoremap <silent><nowait> <space>e  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <space>o  :<C-u>CocList --auto-preview outline<cr>
 nnoremap <silent><nowait> <space>y  :<C-u>CocList yank<cr>
-nnoremap <silent><nowait> <space>a  :<C-u>CocList actions<cr>
+nnoremap <silent><nowait> <space>a  :<C-u>CocAction<cr>
 nnoremap <silent><nowait> <space>pyi  :<C-u>CocCommand python.setInterpreter<cr>
-noremap ]e <Plug>(coc-diagnostic-next-error)
-noremap [e <Plug>(coc-diagnostic-prev-error)
-noremap ]a <Plug>(coc-diagnostic-next)
-noremap [a <Plug>(coc-diagnostic-prev)
+nmap <silent> ]e <Plug>(coc-diagnostic-next-error)
+nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
+nmap <silent> ]a <Plug>(coc-diagnostic-next)
+nmap <silent> [a <Plug>(coc-diagnostic-prev)
 
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
