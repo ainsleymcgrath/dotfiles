@@ -7,6 +7,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'google/vim-searchindex'
 Plug 'jnurmine/Zenburn'
+" Plug 'romainl/flattened'
+Plug 'arcticicestudio/nord-vim'
 
 " general utils
 Plug 'scrooloose/nerdtree'
@@ -39,11 +41,12 @@ Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build'
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 Plug 'herringtondarkholme/yats.vim', { 'for': 'javascript' }
 Plug 'maxmellon/vim-jsx-pretty', { 'for': 'javascript' }
-Plug 'prettier/vim-prettier', { 'for': ['javascript', 'html', 'css', 'json'] }
+Plug 'prettier/vim-prettier', { 'for': ['javascript', 'html', 'css', 'json', 'typescript', 'typescriptreact'] }
 Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'josudoey/vim-eslint-fix', { 'for': ['javascript', 'html', 'css', 'json'] }
 
 " python
-Plug 'psf/black', { 'for': 'python', 'tag': '19.10b0' }
+Plug 'psf/black', { 'for': 'python', 'tag': '20.8b1' }
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 Plug 'jeetsukumaran/vim-pythonsense', { 'for': 'python' }  " can CoC do it?
 Plug 'cespare/vim-toml'
@@ -52,8 +55,13 @@ call plug#end()
 
 " da basics
 filetype plugin indent on
+filetype plugin on
 syntax on
 set expandtab " use spaces instead of tabs.
+set shiftwidth=4 " 8 is a terrible default
+autocmd BufRead,BufNewFile,BufEnter *.yml,*.yaml,*.json,*.html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd BufRead,BufNewFile,BufEnter *.cfg,*.toml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
 
 " tagbar
 let g:tagbar_sort = 0 " hate that this isn't a default...
@@ -86,17 +94,20 @@ let mapleader=' '
 
 inoremap jj <Esc>
 cnoremap jj <Esc>
-" exit terminal
-tnoremap <C-g> <C-\><C-n>  
+" exit and enter terminal
+tnoremap <Esc> <C-\><C-n>  
+noremap <leader>tv :vsplit<CR>:terminal<CR>
+noremap <leader>th :split<CR>:terminal<CR>
+noremap <leader>tt :tabe<CR>:terminal<CR>
 
 noremap <C-e> :NERDTreeToggle<CR>
 noremap <C-t> :TagbarToggle<CR>
-noremap <C-P> :Files!<CR>
-noremap <C-l> :Rg!<CR>
+noremap <C-P> :GFiles<CR>
+noremap <C-l> :Rg<CR>
 noremap <leader>b :Buffers<CR>
-noremap <leader>/ :BLines!<CR>
+noremap <leader>/ :BLines<CR>
 noremap <Leader>tg :Tags<CR>
-noremap <Leader>gsb :GFiles!?<CR>
+noremap <Leader>gsb :GFiles?<CR>
 noremap <Leader>fo :Black<CR>
 nmap <leader>fr <Plug>(FerretAcks)
 noremap :W :w
@@ -105,6 +116,16 @@ noremap <leader>st :SignifyToggle<CR>
 noremap <silent><expr> <leader>ht (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 noremap <silent><expr> <leader>ln (&rnu ? ':set nornu' : ':set rnu')."\n"
 noremap <leader>se :Semshi enable<CR>
+
+let g:semshi#simplify_markup = v:false
+
+
+function MyCustomHighlights()
+    " darker blue for self attributes
+    hi semshiAttribute ctermfg=13  guifg=#00ffaf
+endfunction
+
+autocmd FileType python call MyCustomHighlights()
 
 " maps to K
 function! s:show_documentation()
@@ -130,14 +151,14 @@ nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
 nmap <silent> ]a <Plug>(coc-diagnostic-next)
 nmap <silent> [a <Plug>(coc-diagnostic-prev)
 
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
+" xmap if <Plug>(coc-funcobj-i)
+" omap if <Plug>(coc-funcobj-i)
+" xmap af <Plug>(coc-funcobj-a)
+" omap af <Plug>(coc-funcobj-a)
+" xmap ic <Plug>(coc-classobj-i)
+" omap ic <Plug>(coc-classobj-i)
+" xmap ac <Plug>(coc-classobj-a)
+" omap ac <Plug>(coc-classobj-a)
 
 " more coc [https://github.com/neoclide/coc.nvim#example-vim-configuration]
 " Don't pass messages to |ins-completion-menu|.
@@ -168,13 +189,15 @@ set showmatch " live match highlighting
 set gdefault " use the `g` flag by default.
 " and also more insane
 let $FZF_DEFAULT_COMMAND = 'rg -l --files""'
-let $BAT_THEME = 'zenburn'
+let $BAT_THEME = 'Nord' " 'zenburn'
 let g:FerretAutojump=0
 
 set rtp+=/usr/local/opt/fzf
 
 " look / feel
-colorscheme zenburn
+" colorscheme zenburn
+" colorscheme flattened_light
+colorscheme nord
 set number
 set laststatus=2
 let NERDTreeShowHidden=1
@@ -202,7 +225,7 @@ function! StatusDiagnostic() abort
 endfunction
 
 let g:lightline = {
-    \ 'colorscheme': 'jellybeans',
+    \ 'colorscheme': 'nord',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'linterstatus' ] ]
@@ -218,8 +241,4 @@ set splitright
 set splitbelow
 
 " prettier
-let g:prettier#config#arrow_parens='avoid'
-let g:prettier#quickfix_enabled = 0
-let g:prettier#autoformat = 0
-let g:prettier#config#single_quote = 'true'
-let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#config#trailing_comma='all'
