@@ -47,7 +47,7 @@ Plug 'josudoey/vim-eslint-fix', { 'for': ['javascript', 'html', 'css', 'json'] }
 
 " python
 Plug 'psf/black', { 'for': 'python', 'tag': '20.8b1' }
-Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
+" Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 Plug 'jeetsukumaran/vim-pythonsense', { 'for': 'python' }  " can CoC do it?
 Plug 'cespare/vim-toml'
 
@@ -115,17 +115,17 @@ noremap :W :w
 noremap <leader>st :SignifyToggle<CR>
 noremap <silent><expr> <leader>ht (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 noremap <silent><expr> <leader>ln (&rnu ? ':set nornu' : ':set rnu')."\n"
-noremap <leader>se :Semshi enable<CR>
+" noremap <leader>se :Semshi enable<CR>
 
-let g:semshi#simplify_markup = v:false
+" let g:semshi#simplify_markup = v:false
 
 
-function MyCustomHighlights()
-    " darker blue for self attributes
-    hi semshiAttribute ctermfg=13  guifg=#00ffaf
-endfunction
+" function MyCustomHighlights()
+"     " darker blue for self attributes
+"     hi semshiAttribute ctermfg=13  guifg=#00ffaf
+" endfunction
 
-autocmd FileType python call MyCustomHighlights()
+" autocmd FileType python call MyCustomHighlights()
 
 " maps to K
 function! s:show_documentation()
