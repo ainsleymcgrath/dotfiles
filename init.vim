@@ -7,8 +7,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'google/vim-searchindex'
 Plug 'jnurmine/Zenburn'
-" Plug 'romainl/flattened'
 Plug 'arcticicestudio/nord-vim'
+Plug 'fenetikm/falcon'
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " general utils
 Plug 'scrooloose/nerdtree'
@@ -28,6 +29,11 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'qpkorr/vim-bufkill'
 Plug 'justinmk/vim-sneak'
 Plug 'hylang/vim-hy'
+
+" telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 "completions
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -115,17 +121,10 @@ noremap :W :w
 noremap <leader>st :SignifyToggle<CR>
 noremap <silent><expr> <leader>ht (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 noremap <silent><expr> <leader>ln (&rnu ? ':set nornu' : ':set rnu')."\n"
-" noremap <leader>se :Semshi enable<CR>
 
-" let g:semshi#simplify_markup = v:false
-
-
-" function MyCustomHighlights()
-"     " darker blue for self attributes
-"     hi semshiAttribute ctermfg=13  guifg=#00ffaf
-" endfunction
-
-" autocmd FileType python call MyCustomHighlights()
+" this is no ordinary pipe...
+let g:indent_blankline_char = '│'
+noremap <Leader>gsb :GFiles?<CR>
 
 " maps to K
 function! s:show_documentation()
@@ -189,7 +188,7 @@ set showmatch " live match highlighting
 set gdefault " use the `g` flag by default.
 " and also more insane
 let $FZF_DEFAULT_COMMAND = 'rg -l --files""'
-let $BAT_THEME = 'Nord' " 'zenburn'
+let $BAT_THEME = 'Solarized (light)' " 'zenburn'
 let g:FerretAutojump=0
 
 set rtp+=/usr/local/opt/fzf
@@ -197,7 +196,9 @@ set rtp+=/usr/local/opt/fzf
 " look / feel
 " colorscheme zenburn
 " colorscheme flattened_light
-colorscheme nord
+colorscheme falcon
+set termguicolors
+
 set number
 set laststatus=2
 let NERDTreeShowHidden=1
