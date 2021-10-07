@@ -70,9 +70,9 @@ function lt() {
 # $1=taget session
 function txa() {
     if [[ -z ${1} ]]; then
-        tmux attach
+        tmux -CC attach
     else
-        tmux attach -t $1
+        tmux -CC attach -t $1
     fi
 }
 
