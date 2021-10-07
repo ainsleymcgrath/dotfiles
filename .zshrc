@@ -43,6 +43,7 @@ alias gcoh="gco HEAD -- "
 alias glom="glo master.."
 alias glo1="glo -n1"
 alias glo5="glo -n5"
+alias glo10="glo -n10"
 
 # 'list tree' : 
 # `lt [path] [level]
