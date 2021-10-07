@@ -107,3 +107,5 @@ zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
 export PATH="/Users/ains/.deta/bin:$PATH"
+
+export PATH="$HOME/.poetry/bin:$PATH"
