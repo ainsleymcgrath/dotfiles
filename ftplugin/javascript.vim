@@ -11,4 +11,4 @@ function! PrettyFile()
   end
 endfunction
 
-noremap <Leader>fo :PrettierAsync<cr>
+noremap <Leader>fo :Prettier<cr>
