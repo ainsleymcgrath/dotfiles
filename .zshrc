@@ -34,7 +34,7 @@ alias pyma="python manage.py"
 alias pyact="pyenv activate"
 alias po="poetry"
 alias txl="tmux ls"
-alias txk="tmux kill-session -t"
+alias _txk="tmux kill-session -t"
 alias l="exa -1a"
 alias ll="exa -la"
 alias soz=". ~/.zshrc"
@@ -44,6 +44,14 @@ alias glom="glo master.."
 alias glo1="glo -n1"
 alias glo5="glo -n5"
 alias glo10="glo -n10"
+alias doco="docker-compose"
+
+function txk() {
+    for session_name in "$@"
+    do
+        _txk $session_name
+    done
+}
 
 # 'list tree' : 
 # `lt [path] [level]
