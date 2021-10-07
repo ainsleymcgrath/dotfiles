@@ -106,3 +106,4 @@ eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
+export PATH="/Users/ains/.deta/bin:$PATH"
