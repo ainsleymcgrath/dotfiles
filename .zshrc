@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 # Enable completions
 autoload -Uz compinit;
 if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ~/.zcompdump) ]; then
@@ -10,15 +12,18 @@ fi
 source ~/.zsh_plugins.sh
 
 # # Eventually reload completions
-read < <( compinit );
+# read < <( compinit );
 
 # Config
 export DISABLE_AUTO_TITLE="true"
 export COMPLETION_WAITING_DOTS="true"
-export EDITOR="nvim"
-export BAT_THEME="Solarized (light)" #"base16"
+# GET CRAZY WITH LUNARVIM
+export EDITOR="lvim"
+export BAT_THEME="base16"
 export HISTCONTROL=ignoreboth:erasedups
 export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout reverse-list --preview '(bat --color=always --style=numbers --line-range :500 {} || exa -T --color=always {}) 2> /dev/null'"
+
+setopt auto_cd
 
 # python utils
 eval "$(pyenv init -)"
@@ -45,6 +50,7 @@ alias glo1="glo -n1"
 alias glo5="glo -n5"
 alias glo10="glo -n10"
 alias doco="docker-compose"
+alias md="mkdir -p"
 
 function txk() {
     for session_name in "$@"
@@ -104,11 +110,6 @@ function muxrestart() {
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# After-hook
-if [ -f ~/.zshrc_local_after ]; then
-  source ~/.zshrc_local_after
-fi
-
 eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
 
 zstyle ':completion:*' menu select
@@ -117,3 +118,15 @@ fpath+=~/.zfunc
 export PATH="/Users/ains/.deta/bin:$PATH"
 
 export PATH="$HOME/.poetry/bin:$PATH"
+
+eval "$(fnm env)"
+alias nvm="fnm"
+
+eval "$(zoxide init zsh)"
+
+# After-hook
+if [ -f ~/.zshrc_local_after ]; then
+  source ~/.zshrc_local_after
+fi
+
+# zprof

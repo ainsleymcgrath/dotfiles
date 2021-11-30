@@ -1,17 +1,17 @@
-# oh my zsh pre-requisites.
-robbyrussell/oh-my-zsh path:lib
-
 # Color/highlighting related things
-zsh-users/zsh-syntax-highlighting
+# zsh-users/zsh-syntax-highlighting
+zdharma/fast-syntax-highlighting
 chrissicool/zsh-256color
 zuxfoucault/colored-man-pages_mod
 zpm-zsh/colorize
 
 # Completion
 robbyrussell/oh-my-zsh path:plugins/gitfast
+robbyrussell/oh-my-zsh path:lib/completion.zsh
+robbyrussell/oh-my-zsh path:lib/key-bindings.zsh
 
-# Human
-MichaelAquilina/zsh-you-should-use
+# History
+robbyrussell/oh-my-zsh path:lib/history.zsh
 
 # Theme
 denysdovhan/spaceship-prompt
@@ -19,4 +19,4 @@ denysdovhan/spaceship-prompt
 # Neat
 robbyrussell/oh-my-zsh path:plugins/wd
 robbyrussell/oh-my-zsh path:plugins/git
-
+robbyrussell/oh-my-zsh path:lib/directories.zsh
