@@ -6,10 +6,14 @@ call plug#begin('~/.vim/plugged')
 " look/feel
 Plug 'itchyny/lightline.vim'
 Plug 'google/vim-searchindex'
+Plug 'lukas-reineke/indent-blankline.nvim'
+
+" colors
 Plug 'jnurmine/Zenburn'
 Plug 'arcticicestudio/nord-vim'
 Plug 'fenetikm/falcon'
-Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'mcchrish/zenbones.nvim'
+Plug 'rktjmp/lush.nvim'  " peer dependency of zenbones
 
 " general utils
 Plug 'scrooloose/nerdtree'
@@ -68,6 +72,7 @@ set shiftwidth=4 " 8 is a terrible default
 autocmd BufRead,BufNewFile,BufEnter *.yml,*.yaml,*.json,*.html setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd BufRead,BufNewFile,BufEnter *.cfg,*.toml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
+set mouse=a
 
 " tagbar
 let g:tagbar_sort = 0 " hate that this isn't a default...
@@ -194,9 +199,9 @@ let g:FerretAutojump=0
 set rtp+=/usr/local/opt/fzf
 
 " look / feel
-" colorscheme zenburn
+colorscheme zenbones
 " colorscheme flattened_light
-colorscheme falcon
+" colorscheme falcon
 set termguicolors
 
 set number
@@ -208,7 +213,7 @@ highlight SignColumn ctermbg=NONE cterm=NONE guibg=NONE gui=NONE
 highlight SignifySignChange ctermbg=NONE ctermfg=yellow
 highlight SignifySignAdd ctermbg=NONE ctermfg=green
 highlight SignifySignDelete ctermbg=NONE ctermfg=red
-highlight LineNr ctermbg=NONE
+highlight clear LineNr
 highlight CursorLineNr ctermbg=NONE
 highlight Comment cterm=italic gui=italic
 
