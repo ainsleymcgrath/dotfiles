@@ -1,9 +1,0 @@
-{
-    "coc.preferences.jumpCommand": "edit",
-    "list.insertMappings": {"<C-g>": "do:exit"},
-    "diagnostic.refreshOnInsertMode": true,
-    "diagnostic.messageTarget": "float",
-    "coc.preferences.previewAutoClose": true,
-    "diagnostic-languageserver.filetypes": {"python": ["flake8", "mypy"]},
-    "diagnostic-languageserver.mergeConfig": true
-}
