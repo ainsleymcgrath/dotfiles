@@ -17,6 +17,5 @@ robbyrussell/oh-my-zsh path:lib/history.zsh
 denysdovhan/spaceship-prompt
 
 # Neat
-robbyrussell/oh-my-zsh path:plugins/wd
 robbyrussell/oh-my-zsh path:plugins/git
 robbyrussell/oh-my-zsh path:lib/directories.zsh
