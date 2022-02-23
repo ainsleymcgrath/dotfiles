@@ -2,26 +2,22 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "zenbones"
-vim.cmd("set background=light")
+vim.cmd("set background=dark")
 vim.cmd("let g:python3_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')")
-
--- haha
 
 -- this lets jj work as escape
 vim.cmd("set timeoutlen=300")
 
--- perhaps i am a fool, but doing this in `config` above doesn't seem to work immediately
-local function setup_symbols_outline()
-	require("symbols-outline").setup({ width = 65, auto_preview = false })
-end
-
--- setup_symbols_outline()
-
 lvim.plugins = {
 	{ "mcchrish/zenbones.nvim", requires = "rktjmp/lush.nvim" },
-	{
-		"folke/trouble.nvim",
-	},
+	{ "folke/trouble.nvim" },
+	{ "ggandor/lightspeed.nvim" },
+	{ "windwp/nvim-spectre" },
+	{ "romgrk/nvim-treesitter-context" },
+	{ "ray-x/lsp_signature.nvim" },
+	{ "tpope/vim-repeat" },
+	{ "tpope/vim-surround" },
+	{ "metakirby5/codi.vim" },
 	{
 		"ibhagwan/fzf-lua",
 		requires = {
@@ -29,17 +25,10 @@ lvim.plugins = {
 			"kyazdani42/nvim-web-devicons",
 		},
 	},
-	{ "ggandor/lightspeed.nvim" },
 	{
 		"windwp/nvim-ts-autotag",
 		config = function()
 			require("nvim-ts-autotag").setup()
-		end,
-	},
-	{
-		"blackCauldron7/surround.nvim",
-		config = function()
-			require("surround").setup({ mappings_style = "surround" })
 		end,
 	},
 	{
@@ -52,23 +41,27 @@ lvim.plugins = {
 	},
 	{
 		"simrat39/symbols-outline.nvim",
-		config = setup_symbols_outline,
 	},
-	{ "windwp/nvim-spectre" },
-	{ "romgrk/nvim-treesitter-context" },
-	{ "ray-x/lsp_signature.nvim" },
-	{ "tpope/vim-repeat" },
 }
+-- can't configure this the nomral packer-y way.
+-- https://github.com/simrat39/symbols-outline.nvim#configuration
+vim.g.symbols_outline = { width = 65, auto_preview = false }
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 lvim.keys.normal_mode = {
 	["<leader>O"] = "<cmd>SymbolsOutline<cr>",
 	["<leader>s"] = "",
+	["L"] = "",
+	["H"] = "",
 }
 
 lvim.keys.insert_mode = {
+	-- get rid of lvim defaults
 	kj = "",
+	jk = "",
+	-- embrace tradition
+	jj = "<Esc>",
 }
 
 -- fzf/spectre ; text search in general
@@ -82,6 +75,9 @@ lvim.builtin.which_key.mappings["f"] = {
 	U = { "<cmd>FzfLua grep_curbuf<cr>", "Current Buffer" },
 	w = { "<cmd>FzfLua grep_cword<cr>", "Cursor Word" },
 	W = { "<cmd>FzfLua grep_cWORD<cr>", "Cursor WORD" },
+	y = { "<cmd>FzfLua lsp_document_symbols<cr>", "Cursor WORD" },
+	M = { "<cmd>FzfLua resume<cr>", "Cursor WORD" },
+
 	r = { "<cmd> lua require('spectre').open()<cr>", "Find & Replace" },
 	s = { "<cmd> lua require('spectre').open_visual({select_word=true})<cr>", "Find & Replace (cursor word)" },
 	m = { "<cmd> FzfLua keymaps<cr>", "Keymaps" },
@@ -126,11 +122,11 @@ lvim.builtin.which_key.on_config_done = function()
 	-- diagnostic jumps like the good old days
 	wk.register({
 		["]a"] = {
-			"<Cmd>lua vim.lsp.diagnostic.goto_next({popup_opts = {border = lvim.lsp.popup_border}})<CR>",
+			"<Cmd>lua vim.diagnostic.goto_next({popup_opts = {border = lvim.lsp.popup_border}})<CR>",
 			"Next diagnostic",
 		},
 		["[a"] = {
-			"<Cmd>lua vim.lsp.diagnostic.goto_prev({popup_opts = {border = lvim.lsp.popup_border}})<CR>",
+			"<Cmd>lua vim.diagnostic.goto_prev({popup_opts = {border = lvim.lsp.popup_border}})<CR>",
 			"Previous diagnostic",
 		},
 	})
@@ -167,6 +163,8 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- generic LSP settings
 lvim.lsp.automatic_servers_installation = false
+-- ur killin me, pyright....
+vim.list_extend(lvim.lsp.override, { "pyright" })
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require("lvim.lsp.null-ls.formatters")
