@@ -44,13 +44,22 @@ alias l="exa -1a"
 alias ll="exa -la"
 alias soz=". ~/.zshrc"
 alias mux="tmuxinator"
+
 alias gcoh="gco HEAD -- "
+alias gcom="gco master -- "
 alias glom="glo master.."
 alias glo1="glo -n1"
 alias glo5="glo -n5"
 alias glo10="glo -n10"
+alias gsdt="gd --stat"
+alias gsbm="gsb master.."
+alias gdstm="gd --stat master.."
+
 alias doco="docker-compose"
 alias md="mkdir -p"
+
+# removes status indicators and the first line with sd
+alias black_modified="gsb | rg '.py' | sd '^\s{0,2}[A-Z?]{1,2}|#.*' '' | xargs black"
 
 function txk() {
     for session_name in "$@"
@@ -107,6 +116,40 @@ function muxrestart() {
     tmuxinator start $1
 }
 
+# list virtualenvs, fzf them,
+# strip everything but the name from the result, activate it
+function fzv () {
+  pyact $(pyenv virtualenvs | fzf | sd '\(.*' '')
+}
+
+# fuzzy search & checkout git branch
+function fzb() {
+  gco $(gb -l | fzf)
+}
+
+# check out aliases
+function fzfa() {
+  alias | fzf
+}
+
+function pwd-leaf() {
+  echo $(pwd | awk -F "/" '{print $NF}')
+}
+
+# make a venv named after current dir
+function cwd-mkvenv() {
+  version=$1
+  name=$(pwd-leaf)
+  pyenv virtualenv $version $name
+  pyenv activate $name
+}
+
+# activate venv named after this repo
+function venv() {
+  name=$(pwd-leaf)
+  pyenv activate $name
+}
+
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -130,3 +173,4 @@ if [ -f ~/.zshrc_local_after ]; then
 fi
 
 # zprof
+export EE_EXTRA_DATETIME_INPUT_FORMATS='["MMM D YY", "MMM D", "MMMD", "ddd"]'
