@@ -26,38 +26,57 @@ export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout revers
 setopt auto_cd
 
 # python utils
-eval "$(pyenv init -)"
 source $HOME/.poetry/env
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
-# aliases
 alias c="clear"
 alias wpy="which python"
+alias pyv="python -V"
 alias jno="jupyter notebook"
 alias ipy="ipython"
 alias pyma="python manage.py"
-alias pyact="pyenv activate"
+alias pyact=". ./.venv/bin/activate"
+alias pya="pyact"
+alias pyin="pip install -r requirements-dev.txt 2> /dev/null || pip install -r requirements_dev.txt"
+alias dea="deactivate"
 alias po="poetry"
+alias poed="poetry run lvim"
 alias txl="tmux ls"
 alias _txk="tmux kill-session -t"
 alias l="exa -1a"
 alias ll="exa -la"
+alias lt="exa -T --git-ignore"
 alias soz=". ~/.zshrc"
 alias mux="tmuxinator"
+alias wcl="wc -l"
 
 alias gcoh="gco HEAD -- "
-alias gcom="gco master -- "
-alias glom="glo master.."
+alias gcom="gco master -- 2> /dev/null || gco main --"
+alias glom="glo master.. 2> /dev/null || glo main.."
 alias glo1="glo -n1"
 alias glo5="glo -n5"
 alias glo10="glo -n10"
 alias gsdt="gd --stat"
 alias gsbm="gsb master.."
-alias gdstm="gd --stat master.."
+alias gdstm="gd --stat master.. 2> /dev/null || gd --stat main.."
 
+alias nuke-venv="deactivate 2>/dev/null || true && rm -rf .venv"
 alias doco="docker-compose"
 alias md="mkdir -p"
+alias bap="bat -P --style plain"
+alias ezsh="$EDITOR ~/.zshrc"
+alias civ="circleci config validate"
+alias pc="pre-commit"
 
+unalias gp
+function gp() {
+  git push -u origin $(gb --show-current) "$@"
+}
+
+function gcopb() {
+  branch=$(pbpaste)
+  git checkout "$branch" "$@" 2> /dev/null \
+    || git checkout -b "$branch"
+}
 # removes status indicators and the first line with sd
 alias black_modified="gsb | rg '.py' | sd '^\s{0,2}[A-Z?]{1,2}|#.*' '' | xargs black"
 
@@ -66,26 +85,6 @@ function txk() {
     do
         _txk $session_name
     done
-}
-
-# 'list tree' : 
-# `lt [path] [level]
-# $1=path [default=pwd]
-# $2=level [default=99]
-# $3=ignores [default="__pycache__|node_modules"]
-function lt() {
-    default_ignores="__pycache__|node_modules"
-    default_depth=99
-
-    if [[ -z $1 && -z $2 ]]; then
-        exa -T -I $default_ignores -L $default_depth
-    elif [[ -n $1 && -z $2 ]]; then
-        exa -T -I $default_ignores -L $default_depth $1
-    # elif [[ -n $3 ]]; then
-    #     exa -T -I $default_ignores\|$3 -L $default_depth $1
-    else
-        exa -T -I $default_ignores -L $2 $1
-    fi
 }
 
 # 'tmux attach' :
@@ -124,7 +123,7 @@ function fzv () {
 
 # fuzzy search & checkout git branch
 function fzb() {
-  gco $(gb -l | fzf)
+  gco $(gb -l -a | sd "/remotes|\*|\+" "" | fzf)
 }
 
 # check out aliases
@@ -138,19 +137,19 @@ function pwd-leaf() {
 
 # make a venv named after current dir
 function cwd-mkvenv() {
-  version=$1
-  name=$(pwd-leaf)
-  pyenv virtualenv $version $name
-  pyenv activate $name
+  if [[ ! -e .python-version ]]; then
+    echo 'No .python-version found. Exiting.'
+  fi
+
+  python -m venv .venv
+  pyact
+  pip install --upgrade pip
 }
 
-# activate venv named after this repo
-function venv() {
-  name=$(pwd-leaf)
-  pyenv activate $name
+function fzfig () {
+  figlet -f $(figlet -l | fzf --preview "figlet -f {} $1" --preview-window=right,75%) $1
 }
 
-# fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
@@ -172,5 +171,7 @@ if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
 
-# zprof
 export EE_EXTRA_DATETIME_INPUT_FORMATS='["MMM D YY", "MMM D", "MMMD", "ddd"]'
+
+eval "$(pyenv init -)"
+# zprof

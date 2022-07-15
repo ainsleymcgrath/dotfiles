@@ -2,7 +2,7 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "zenbones"
-vim.cmd("set background=dark")
+vim.cmd("set background=light")
 vim.cmd("let g:python3_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')")
 
 -- this lets jj work as escape
@@ -42,10 +42,13 @@ lvim.plugins = {
 	{
 		"simrat39/symbols-outline.nvim",
 	},
+	{ "pantharshit00/vim-prisma" },
+	{ "tpope/vim-commentary" },
+	{ "kevinhwang91/nvim-bqf" },
 }
 -- can't configure this the nomral packer-y way.
 -- https://github.com/simrat39/symbols-outline.nvim#configuration
-vim.g.symbols_outline = { width = 65, auto_preview = false }
+vim.g.symbols_outline = { width = 35, auto_preview = false }
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -95,10 +98,12 @@ lvim.builtin.which_key.mappings["t"] = {
 	l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 	w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 	c = { "<cmd>TroubleClose<cr>", "Close" },
+	t = { "<cmd>TroubleToggle<cr>", "Toggle" },
 }
 
 -- get rid of telescope buffer finder -- FZF FTW
 lvim.builtin.which_key.mappings["b"]["f"] = { "<cmd>FzfLua buffers<cr>", "Find" }
+lvim.builtin.which_key.mappings["b"]["w"] = { "<cmd>BufferKill<cr>", "Kill (Wipeout)" }
 
 -- add LspRestart
 lvim.builtin.which_key.mappings["l"]["R"] = { "<cmd>LspRestart<cr>", "Restart" }
@@ -135,12 +140,13 @@ end
 -- default mapping steps in front of lightspeed. h8 that.
 lvim.builtin.which_key.mappings["s"] = {}
 
-lvim.builtin.dashboard.active = true
-lvim.builtin.dashboard.search_handler = "fzf-lua"
+lvim.builtin.dashboard.disable_at_vim_enter = 1
+lvim.builtin.alpha.active = false
+lvim.builtin.alpha.active = false
 
 lvim.builtin.terminal.active = true
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 0
+-- lvim.builtin.nvimtree.setup.view.side = "left"
+-- lvim.builtin.nvimtree.show_icons.git = 0
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -164,7 +170,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- generic LSP settings
 lvim.lsp.automatic_servers_installation = false
 -- ur killin me, pyright....
-vim.list_extend(lvim.lsp.override, { "pyright" })
+-- vim.list_extend(lvim.lsp.override, { "pyright" })
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require("lvim.lsp.null-ls.formatters")
@@ -173,11 +179,8 @@ formatters.setup({
 	{
 		exe = "isort",
 		args = {
-			"--multi-line-output=3",
-			"--include-trailing-comma=True",
-			"--force-grid-wrap=0",
-			"--use-parenthesis=True",
-			"--line-length=88",
+			"--profile",
+			"black",
 		},
 	},
 	{ exe = "stylua" },
@@ -194,11 +197,24 @@ formatters.setup({
 			"markdown",
 		},
 	},
+	{
+		exe = "eslint",
+		filetypes = {
+			"typescript",
+			"typescriptreact",
+			"javascript",
+			"javascriptreact",
+		},
+	},
 })
 
 -- set additional linters
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
-	{ exe = "flake8" },
+	{ exe = "flake8", args = {
+		"--extend-ignore",
+		"E203",
+	} },
 	{ exe = "mypy" },
+	{ exe = "pylint" },
 })
