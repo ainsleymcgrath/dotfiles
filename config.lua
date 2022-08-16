@@ -14,7 +14,13 @@ lvim.plugins = {
 	{ "ggandor/lightspeed.nvim" },
 	{ "windwp/nvim-spectre" },
 	{ "romgrk/nvim-treesitter-context" },
-	{ "ray-x/lsp_signature.nvim" },
+	{
+		"ray-x/lsp_signature.nvim",
+		event = "BufRead",
+		config = function()
+			require("lsp_signature").on_attach({ floating_window = false, bind = true })
+		end,
+	},
 	{ "tpope/vim-repeat" },
 	{ "tpope/vim-surround" },
 	{ "metakirby5/codi.vim" },
@@ -61,8 +67,8 @@ lvim.keys.normal_mode = {
 
 lvim.keys.insert_mode = {
 	-- get rid of lvim defaults
-	kj = "",
-	jk = "",
+	kj = nil,
+	jk = nil,
 	-- embrace tradition
 	jj = "<Esc>",
 }
@@ -73,13 +79,13 @@ lvim.builtin.which_key.mappings["f"] = {
 	f = { "<cmd>FzfLua git_files<cr>", "Files (git)" },
 	F = { "<cmd>FzfLua files<cr>", "Files (all)" },
 	G = { "<cmd>FzfLua git_status<cr>", "Files (modified)" },
-	l = { "<cmd>FzfLua grep_project<cr>", "Lines" },
+	l = { "<cmd>FzfLua live_grep_glob<cr>", "Lines" },
 	b = { "<cmd>FzfLua buffers<cr>", "Buffers" },
 	U = { "<cmd>FzfLua grep_curbuf<cr>", "Current Buffer" },
 	w = { "<cmd>FzfLua grep_cword<cr>", "Cursor Word" },
 	W = { "<cmd>FzfLua grep_cWORD<cr>", "Cursor WORD" },
-	y = { "<cmd>FzfLua lsp_document_symbols<cr>", "Cursor WORD" },
-	M = { "<cmd>FzfLua resume<cr>", "Cursor WORD" },
+	y = { "<cmd>FzfLua lsp_live_workspace_symbols<cr>", "Workspace Symbols" },
+	M = { "<cmd>FzfLua resume<cr>", "Resume" },
 
 	r = { "<cmd> lua require('spectre').open()<cr>", "Find & Replace" },
 	s = { "<cmd> lua require('spectre').open_visual({select_word=true})<cr>", "Find & Replace (cursor word)" },

@@ -1,18 +1,15 @@
 # zmodload zsh/zprof
 
 # Enable completions
-autoload -Uz compinit;
-if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ~/.zcompdump) ]; then
-  compinit;
-else
-  compinit -C;
-fi
+# https://gist.github.com/ctechols/ca1035271ad134841284?permalink_comment_id=3994613#gistcomment-3994613
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
 # Antibody
 source ~/.zsh_plugins.sh
-
-# # Eventually reload completions
-# read < <( compinit );
 
 # Config
 export DISABLE_AUTO_TITLE="true"
@@ -36,7 +33,7 @@ alias ipy="ipython"
 alias pyma="python manage.py"
 alias pyact=". ./.venv/bin/activate"
 alias pya="pyact"
-alias pyin="pip install -r requirements-dev.txt 2> /dev/null || pip install -r requirements_dev.txt"
+alias pyin="python -m pip install -r requirements-dev.txt 2> /dev/null || python -m pip install -r requirements_dev.txt 2> /dev/null || python -m pip install -r requirements.txt 2> /dev/null || echo 'No requirements file.'"
 alias dea="deactivate"
 alias po="poetry"
 alias poed="poetry run lvim"
@@ -65,7 +62,16 @@ alias md="mkdir -p"
 alias bap="bat -P --style plain"
 alias ezsh="$EDITOR ~/.zshrc"
 alias civ="circleci config validate"
+alias slv="serverless config validate"
 alias pc="pre-commit"
+
+alias ul="ultralist"
+alias ull="ul l"
+alias ula="ul a"
+alias ulc="ul c"
+alias ule="ul e"
+
+alias marp-serve="npx @marp-team/marp-cli@latest -w"
 
 unalias gp
 function gp() {
@@ -115,6 +121,11 @@ function muxrestart() {
     tmuxinator start $1
 }
 
+# list all homebrew packages and show their info
+function fzfbrew() {
+   brew list -1 -t | sort | fzf -m --preview="brew info {}"
+} 
+
 # list virtualenvs, fzf them,
 # strip everything but the name from the result, activate it
 function fzv () {
@@ -131,6 +142,10 @@ function fzfa() {
   alias | fzf
 }
 
+function fzcd() {
+  cd $(exa -Dl1 --git-ignore -I "__pycache__|node_modules|*egg*" | fzf)
+}
+
 function pwd-leaf() {
   echo $(pwd | awk -F "/" '{print $NF}')
 }
@@ -139,15 +154,18 @@ function pwd-leaf() {
 function cwd-mkvenv() {
   if [[ ! -e .python-version ]]; then
     echo 'No .python-version found. Exiting.'
+    return
   fi
 
   python -m venv .venv
   pyact
-  pip install --upgrade pip
+  .venv/bin/python -m pip install --upgrade pip
+  # .venv/bin/python -m pyin
+  pyin
 }
 
 function fzfig () {
-  figlet -f $(figlet -l | fzf --preview "figlet -f {} $1" --preview-window=right,75%) $1
+  figlet -f "$(figlet -l | fzf --preview "figlet -f {} $1" --preview-window=right,75%)" $1 | pbcopy
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -172,6 +190,9 @@ if [ -f ~/.zshrc_local_after ]; then
 fi
 
 export EE_EXTRA_DATETIME_INPUT_FORMATS='["MMM D YY", "MMM D", "MMMD", "ddd"]'
+
+export FLYCTL_INSTALL="/Users/ains/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 eval "$(pyenv init -)"
 # zprof
