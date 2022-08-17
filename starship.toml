@@ -1,0 +1,35 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# format = """
+# $username\
+# $hostname\
+# $directory\
+# $git_branch\
+# $git_status\
+# $package\
+# $lua\
+# $nodejs\
+# $python\
+# $aws\
+# $env_var\
+# $cmd_duration\
+# $line_break\
+# $jobs\
+# $battery\
+# $status\
+# $container\
+# $shell\
+# $character"""
+
+format = """$character"""
+
+right_format = "$directory$git_branch$git_status$time"
+
+[character]
+success_symbol = "[•](bold green)"
+error_symbol = "[×](bold red)"
+
+[time]
+disabled = false
+time_format = "%b%d %H:%M"
+format = "[$time](dimmed fg:251)"
