@@ -1,4 +1,5 @@
 # zmodload zsh/zprof
+source ~/.zgenom/sources/init.zsh;
 
 # Enable completions
 # https://gist.github.com/ctechols/ca1035271ad134841284?permalink_comment_id=3994613#gistcomment-3994613
