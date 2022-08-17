@@ -1,52 +1,46 @@
 # zmodload zsh/zprof
 source ~/.zgenom/sources/init.zsh;
 
-# Enable completions
-# https://gist.github.com/ctechols/ca1035271ad134841284?permalink_comment_id=3994613#gistcomment-3994613
-autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
+setopt auto_cd
 
-# Antibody
-source ~/.zsh_plugins.sh
-
-# Config
-export DISABLE_AUTO_TITLE="true"
-export COMPLETION_WAITING_DOTS="true"
-# GET CRAZY WITH LUNARVIM
+# export DISABLE_AUTO_TITLE="true"
+# export COMPLETION_WAITING_DOTS="true"
 export EDITOR="lvim"
 export BAT_THEME="base16"
 export HISTCONTROL=ignoreboth:erasedups
 export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout reverse-list --preview '(bat --color=always --style=numbers --line-range :500 {} || exa -T --color=always {}) 2> /dev/null'"
 
-setopt auto_cd
-
-# python utils
-source $HOME/.poetry/env
-
 alias c="clear"
+alias soz=". ~/.zshrc"
+alias wcl="wc -l"
+alias md="mkdir -p"
+alias ezsh="$EDITOR ~/.zshrc"
+
 alias wpy="which python"
 alias pyv="python -V"
-alias jno="jupyter notebook"
 alias ipy="ipython"
-alias pyma="python manage.py"
 alias pyact=". ./.venv/bin/activate"
 alias pya="pyact"
 alias pyin="python -m pip install -r requirements-dev.txt 2> /dev/null || python -m pip install -r requirements_dev.txt 2> /dev/null || python -m pip install -r requirements.txt 2> /dev/null || echo 'No requirements file.'"
 alias dea="deactivate"
+alias nuke-venv="deactivate 2>/dev/null || true && rm -rf .venv"
+
+source $HOME/.poetry/env
 alias po="poetry"
 alias poed="poetry run lvim"
+export PATH="$HOME/.poetry/bin:$PATH"
+
 alias txl="tmux ls"
 alias _txk="tmux kill-session -t"
+alias mux="tmuxinator"
+
 alias l="exa -1a"
 alias ll="exa -la"
 alias lt="exa -T --git-ignore"
-alias soz=". ~/.zshrc"
-alias mux="tmuxinator"
-alias wcl="wc -l"
 
+alias bap="bat -P --style plain"
+
+source ~/.git-aliases
 alias gcoh="gco HEAD -- "
 alias gcom="gco master -- 2> /dev/null || gco main --"
 alias glom="glo master.. 2> /dev/null || glo main.."
@@ -56,14 +50,21 @@ alias glo10="glo -n10"
 alias gsdt="gd --stat"
 alias gsbm="gsb master.."
 alias gdstm="gd --stat master.. 2> /dev/null || gd --stat main.."
+function gp() {
+  git push -u origin $(gb --show-current) "$@"
+}
+function gcopb() {
+  branch=$(pbpaste)
+  git checkout "$branch" "$@" 2> /dev/null \
+    || git checkout -b "$branch"
+}
 
-alias nuke-venv="deactivate 2>/dev/null || true && rm -rf .venv"
 alias doco="docker-compose"
-alias md="mkdir -p"
-alias bap="bat -P --style plain"
-alias ezsh="$EDITOR ~/.zshrc"
+
 alias civ="circleci config validate"
+
 alias slv="serverless config validate"
+
 alias pc="pre-commit"
 
 alias ul="ultralist"
@@ -73,17 +74,6 @@ alias ulc="ul c"
 alias ule="ul e"
 
 alias marp-serve="npx @marp-team/marp-cli@latest -w"
-
-unalias gp
-function gp() {
-  git push -u origin $(gb --show-current) "$@"
-}
-
-function gcopb() {
-  branch=$(pbpaste)
-  git checkout "$branch" "$@" 2> /dev/null \
-    || git checkout -b "$branch"
-}
 # removes status indicators and the first line with sd
 alias black_modified="gsb | rg '.py' | sd '^\s{0,2}[A-Z?]{1,2}|#.*' '' | xargs black"
 
@@ -121,6 +111,8 @@ function muxrestart() {
     tmuxinator stop $1
     tmuxinator start $1
 }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # list all homebrew packages and show their info
 function fzfbrew() {
@@ -169,31 +161,26 @@ function fzfig () {
   figlet -f "$(figlet -l | fzf --preview "figlet -f {} $1" --preview-window=right,75%)" $1 | pbcopy
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-eval "$(_NOT_COMPLETE=source_zsh not 2>/dev/null)"
-
-zstyle ':completion:*' menu select
-fpath+=~/.zfunc
-
-export PATH="/Users/ains/.deta/bin:$PATH"
-
-export PATH="$HOME/.poetry/bin:$PATH"
 
 eval "$(fnm env)"
 alias nvm="fnm"
-
+ 
 eval "$(zoxide init zsh)"
+# 
+# export EE_EXTRA_DATETIME_INPUT_FORMATS='["MMM D YY", "MMM D", "MMMD", "ddd"]'
+# 
+# export FLYCTL_INSTALL="/Users/ains/.fly"
+# export PATH="$FLYCTL_INSTALL/bin:$PATH"
+# 
+eval "$(pyenv init -)"
+
+eval "$(starship init zsh)"
+
+# lvim, python executables end up here
+export PATH="$HOME/.local/bin:$PATH"
 
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
-
-export EE_EXTRA_DATETIME_INPUT_FORMATS='["MMM D YY", "MMM D", "MMMD", "ddd"]'
-
-export FLYCTL_INSTALL="/Users/ains/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
-
-eval "$(pyenv init -)"
-# zprof
+# # zprof
