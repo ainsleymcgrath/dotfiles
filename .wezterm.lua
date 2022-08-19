@@ -84,5 +84,6 @@ return {
     { key = 'd', mods = 'CMD', action = wezterm.action.SplitPane { direction = "Right" } },
     { key = 'D', mods = 'CMD|SHIFT', action = wezterm.action.SplitPane { direction = "Down" } },
     { key = 'w', mods = 'CMD', action = wezterm.action.CloseCurrentPane { confirm = true } },
+    { key = '0', mods = 'CMD', action = wezterm.action.PaneSelect },
   }
 }
