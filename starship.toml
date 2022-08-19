@@ -31,5 +31,5 @@ error_symbol = "[×](bold red)"
 
 [time]
 disabled = false
-time_format = "%b%d %H:%M"
+time_format = "%d%b%H:%M"
 format = "[$time](dimmed fg:251)"
