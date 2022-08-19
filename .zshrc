@@ -2,9 +2,13 @@
 source ~/.zgenom/sources/init.zsh;
 
 setopt auto_cd
+setopt HIST_IGNORE_ALL_DUPS
 
-# export DISABLE_AUTO_TITLE="true"
-# export COMPLETION_WAITING_DOTS="true"
+# https://github.com/zsh-users/zsh-history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+export HISTORY_SUBSTRING_SEARCH_PREFIXED=1
+
 export EDITOR="lvim"
 export BAT_THEME="base16"
 export HISTCONTROL=ignoreboth:erasedups
