@@ -2,7 +2,7 @@
   "entries": {
     "tap": {
       "homebrew/cask": {
-        "revision": "1eef76a52dd8c3033a323eb60aa30ba04d78bf18"
+        "revision": "e7efcc1cdc5e7bb2633a31f91b9efd00617157bb"
       },
       "homebrew/cask-fonts": {
         "revision": "67adcb77145e2be706a4aa6ab425a35666dc4aed"
@@ -807,6 +807,12 @@
         "options": {
           "full_name": "dbngin"
         }
+      },
+      "docker": {
+        "version": "4.11.1,84025",
+        "options": {
+          "full_name": "docker"
+        }
       }
     }
   },
@@ -815,7 +821,7 @@
       "monterey": {
         "HOMEBREW_VERSION": "3.5.9",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "675426a02faeda6abcfd5f68ae2a87b9c515be8d",
+        "Homebrew/homebrew-core": "b40576758a4ba5082f7e748c0b39a29c76982de3",
         "CLT": "13.4.0.0.1.1651278267",
         "Xcode": "13.4",
         "macOS": "12.5"
