@@ -25,10 +25,10 @@ alias pyin="python -m pip install -r requirements-dev.txt 2> /dev/null || python
 alias dea="deactivate"
 alias nuke-venv="deactivate 2>/dev/null || true && rm -rf .venv"
 
-source $HOME/.poetry/env
-alias po="poetry"
-alias poed="poetry run lvim"
-export PATH="$HOME/.poetry/bin:$PATH"
+# source $HOME/.poetry/env
+# alias po="poetry"
+# alias poed="poetry run lvim"
+# export PATH="$HOME/.poetry/bin:$PATH"
 
 alias txl="tmux ls"
 alias _txk="tmux kill-session -t"
