@@ -26,14 +26,14 @@ alias pyv="python -V"
 alias ipy="ipython"
 alias pyact=". ./.venv/bin/activate"
 alias pya="pyact"
-alias pyin="python -m pip install -r requirements-dev.txt 2> /dev/null || python -m pip install -r requirements_dev.txt 2> /dev/null || python -m pip install -r requirements.txt 2> /dev/null || echo 'No requirements file.'"
+alias pyin="./.venv/bin/python -m pip install -r requirements-dev.txt 2> /dev/null || ./.venv/bin/python -m pip install -r requirements_dev.txt 2> /dev/null || ./.venv/bin/python -m pip install -r requirements.txt 2> /dev/null || echo 'No requirements file.'"
 alias dea="deactivate"
 alias nuke-venv="deactivate 2>/dev/null || true && rm -rf .venv"
 
 # source $HOME/.poetry/env
-# alias po="poetry"
-# alias poed="poetry run lvim"
-# export PATH="$HOME/.poetry/bin:$PATH"
+alias po="poetry"
+alias poed="poetry run lvim"
+export PATH="$HOME/.poetry/bin:$PATH"
 
 alias txl="tmux ls"
 alias _txk="tmux kill-session -t"
@@ -156,10 +156,10 @@ function cwd-mkvenv() {
   fi
 
   python -m venv .venv
-  pyact
   .venv/bin/python -m pip install --upgrade pip
-  # .venv/bin/python -m pyin
   pyin
+  echo "Now source! '. ./.venv/bin/activate' copied to ur clipboard."
+  echo '. ./.venv/bin/activate' | pbcopy
 }
 
 function fzfig () {
