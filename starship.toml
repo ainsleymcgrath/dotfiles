@@ -1,35 +1,22 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# format = """
-# $username\
-# $hostname\
-# $directory\
-# $git_branch\
-# $git_status\
-# $package\
-# $lua\
-# $nodejs\
-# $python\
-# $aws\
-# $env_var\
-# $cmd_duration\
-# $line_break\
-# $jobs\
-# $battery\
-# $status\
-# $container\
-# $shell\
-# $character"""
-
-format = """$character"""
-
-right_format = "$directory$git_branch$git_status$time"
+format = """$directory$character"""
+right_format = "$git_branch$git_status$time"
 
 [character]
 success_symbol = "[•](bold green)"
 error_symbol = "[×](bold red)"
+vimcmd_symbol = "[«](bold blue)"
 
 [time]
 disabled = false
 time_format = "%d%b%H:%M"
 format = "[$time](dimmed fg:251)"
+
+[git_branch]
+# remove the word 'on'
+format = "[$symbol$branch(:$remote_branch)]($style) "
+
+[git_status]
+# remove the brackets surrounding the status
+format = '([$all_status$ahead_behind]($style) )'
