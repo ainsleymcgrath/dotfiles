@@ -19,6 +19,7 @@ alias soz=". ~/.zshrc"
 alias wcl="wc -l"
 alias md="mkdir -p"
 alias ezsh="$EDITOR ~/.zshrc"
+alias ewez="$EDITOR ~/.wezterm.lua"
 
 alias wpy="which python"
 alias pyv="python -V"
