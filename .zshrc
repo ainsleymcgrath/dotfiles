@@ -81,6 +81,7 @@ alias ule="ul e"
 function show-path() {
    echo $PATH | xargs python -c 'import sys; print("\n".join(sorted(sys.argv[1].split(":"))))'
 }
+
 alias marp-serve="npx @marp-team/marp-cli@latest -w"
 # removes status indicators and the first line with sd
 alias black_modified="gsb | rg '.py' | sd '^\s{0,2}[A-Z?]{1,2}|#.*' '' | xargs black"
@@ -186,6 +187,9 @@ eval "$(starship init zsh)"
 
 # lvim, python executables end up here
 export PATH="$HOME/.local/bin:$PATH"
+
+# settings for zsh-vi-mode
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
