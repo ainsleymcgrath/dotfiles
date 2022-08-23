@@ -17,6 +17,7 @@ zgenom load zpm-zsh/colorize
 zgenom load zuxfoucault/colored-man-pages_mod
 zgenom load zsh-users/zsh-autosuggestions
 zgenom load zsh-users/zsh-history-substring-search
+zgenom load jeffreytse/zsh-vi-mode
 
 zgenom save
 zcompile ${TARGET_DIR}/.zgenom/sources/init.zsh
