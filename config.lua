@@ -2,11 +2,13 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "zenbones"
+-- vim.cmd("set background=dark")
 vim.cmd("set background=light")
 vim.cmd("let g:python3_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')")
 
 -- this lets jj work as escape
 vim.cmd("set timeoutlen=300")
+vim.cmd("let @o = 'ysw[iOptionaljjf x;x'") -- optional-ify a python type
 
 lvim.plugins = {
 	{ "mcchrish/zenbones.nvim", requires = "rktjmp/lush.nvim" },
@@ -47,14 +49,20 @@ lvim.plugins = {
 	},
 	{
 		"simrat39/symbols-outline.nvim",
+		config = function()
+			require("symbols-outline").setup({ width = 35, auto_preview = false })
+		end,
 	},
 	{ "pantharshit00/vim-prisma" },
 	{ "tpope/vim-commentary" },
 	{ "kevinhwang91/nvim-bqf" },
+	-- {
+	-- 	"lukas-reineke/virt-column.nvim",
+	-- 	config = function()
+	-- 		require("virt-column").setup()
+	-- 	end,
+	-- },
 }
--- can't configure this the nomral packer-y way.
--- https://github.com/simrat39/symbols-outline.nvim#configuration
-vim.g.symbols_outline = { width = 35, auto_preview = false }
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -87,7 +95,7 @@ lvim.builtin.which_key.mappings["f"] = {
 	f = { "<cmd>FzfLua git_files<cr>", "Files (git)" },
 	F = { "<cmd>FzfLua files<cr>", "Files (all)" },
 	G = { "<cmd>FzfLua git_status<cr>", "Files (modified)" },
-	l = { "<cmd>FzfLua grep_visual<cr>", "Lines" },
+	l = { "<cmd>FzfLua grep_project<cr>", "Lines" },
 	b = { "<cmd>FzfLua buffers<cr>", "Buffers" },
 	U = { "<cmd>FzfLua grep_curbuf<cr>", "Current Buffer" },
 	w = { "<cmd>FzfLua grep_cword<cr>", "Cursor Word" },
@@ -228,5 +236,5 @@ linters.setup({
 		"E203",
 	} },
 	{ exe = "mypy" },
-	{ exe = "pylint" },
+	-- { exe = "pylint" },
 })

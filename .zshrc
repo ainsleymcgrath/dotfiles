@@ -47,7 +47,7 @@ alias bap="bat -P --style plain"
 
 source ~/.git-aliases
 alias gcoh="gco HEAD -- "
-alias gcom="gco master -- 2> /dev/null || gco main --"
+alias gcom="gco master -- 2> /dev/null || gco main -- 2> /dev/null"
 alias glom="glo master.. 2> /dev/null || glo main.."
 alias glo1="glo -n1"
 alias glo5="glo -n5"
@@ -64,7 +64,7 @@ function gcopb() {
     || git checkout -b "$branch"
 }
 
-alias doco="docker-compose"
+alias doco="docker compose"
 
 alias civ="circleci config validate"
 
