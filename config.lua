@@ -2,8 +2,6 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "zenbones"
--- vim.cmd("set background=dark")
-vim.cmd("set background=light")
 vim.cmd("let g:python3_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')")
 
 -- this lets jj work as escape
@@ -56,10 +54,26 @@ lvim.plugins = {
 	{ "pantharshit00/vim-prisma" },
 	{ "tpope/vim-commentary" },
 	{ "kevinhwang91/nvim-bqf" },
+	{
+		"f-person/auto-dark-mode.nvim",
+		config = function()
+			local auto_dark_mode = require("auto-dark-mode")
+			auto_dark_mode.setup({
+				update_interval = 1000,
+				set_dark_mode = function()
+					vim.cmd("set background=dark")
+				end,
+				set_light_mode = function()
+					vim.cmd("set background=light")
+				end,
+			})
+			auto_dark_mode.init()
+		end,
+	},
 	-- {
 	-- 	"lukas-reineke/virt-column.nvim",
 	-- 	config = function()
-	-- 		require("virt-column").setup()
+	-- 		require("virt-column").setup({ char = " ", virtcolumn = "88" })
 	-- 	end,
 	-- },
 }
@@ -132,9 +146,9 @@ lvim.builtin.which_key.mappings["l"]["R"] = { "<cmd>LspRestart<cr>", "Restart" }
 
 -- theme
 lvim.builtin.which_key.mappings["m"] = {
-	name = "Theme",
-	d = { "<cmd>set background=dark<cr>", "Dark" },
-	l = { "<cmd>set background=light<cr>", "Light" },
+	name = "Ter[m]inal",
+	t = { "<cmd>ToggleTerm<cr>", "Toggle" },
+	s = { "<cmd>ToggleTermSendCurrentLine<cr>", "Send Line" },
 }
 
 --misc, mappings that don't begin with <leader>
@@ -157,16 +171,24 @@ lvim.builtin.which_key.on_config_done = function()
 			"Previous diagnostic",
 		},
 	})
+
+	-- terminal stuff
+	wk.register({
+		m = {
+			name = "Ter[m]inal (V)",
+			t = { "<cmd>ToggleTerm<cr>", "Toggle" },
+			s = { "<cmd>ToggleTermSendCurrentLine<cr>", "Send Line" },
+			v = { "<cmd>ToggleTermSendVisualLines<cr>", "Send VLines" },
+		},
+	}, { prefix = "<leader>", mode = "v" })
 end
 
 -- default mapping steps in front of lightspeed. h8 that.
-lvim.builtin.which_key.mappings["s"] = {}
+lvim.builtin.which_key.mappings["s"] = ""
 
 lvim.builtin.alpha.active = false
 
 lvim.builtin.terminal.active = true
--- lvim.builtin.nvimtree.setup.view.side = "left"
--- lvim.builtin.nvimtree.show_icons.git = 0
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
