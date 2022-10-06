@@ -1,7 +1,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """$directory$character"""
-right_format = "$cmd_duration $git_branch$git_status$time"
+right_format = "$cmd_duration $git_branch$git_status $time"
 
 [character]
 success_symbol = "[•](bold green)"
@@ -23,4 +23,4 @@ format = "[$symbol$branch(:$remote_branch)]($style)"
 
 [git_status]
 # remove the brackets surrounding the status
-format = '([$all_status$ahead_behind]($style) )'
+format = '([$all_status$ahead_behind]($style))'
