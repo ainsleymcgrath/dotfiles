@@ -17,6 +17,7 @@ alias gcn!='git commit -v --no-edit --amend'
 alias gcmsg='git commit -m'
 alias gco='git checkout'
 
+alias gcp='git cherry-pick'
 alias gcpa='git cherry-pick --abort'
 alias gcpc='git cherry-pick --continue'
 
@@ -32,6 +33,7 @@ alias gm='git merge'
 alias gpf!='git push --force'
 
 alias grb='git rebase'
+alias grbi='git rebase --interactive'
 alias grba='git rebase --abort'
 alias grbc='git rebase --continue'
 
