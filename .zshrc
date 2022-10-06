@@ -77,6 +77,7 @@ alias ull="ul l"
 alias ula="ul a"
 alias ulc="ul c"
 alias ule="ul e"
+alias ultodo="ull completed:false group:c"
 
 function show-path() {
    echo $PATH | xargs python -c 'import sys; print("\n".join(sorted(sys.argv[1].split(":"))))'
@@ -128,12 +129,6 @@ function fzfbrew() {
    brew list -1 -t | sort | fzf -m --preview="brew info {}"
 } 
 
-# list virtualenvs, fzf them,
-# strip everything but the name from the result, activate it
-function fzv () {
-  pyact $(pyenv virtualenvs | fzf | sd '\(.*' '')
-}
-
 # fuzzy search & checkout git branch
 function fzb() {
   gco $(gb -l -a | sd "/remotes|\*|\+" "" | fzf)
@@ -142,14 +137,6 @@ function fzb() {
 # check out aliases
 function fzfa() {
   alias | fzf
-}
-
-function fzcd() {
-  cd $(exa -Dl1 --git-ignore -I "__pycache__|node_modules|*egg*" | fzf)
-}
-
-function pwd-leaf() {
-  echo $(pwd | awk -F "/" '{print $NF}')
 }
 
 # make a venv named after current dir
@@ -189,10 +176,11 @@ eval "$(starship init zsh)"
 export PATH="$HOME/.local/bin:$PATH"
 
 # settings for zsh-vi-mode
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
+export ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
+
 # # zprof
