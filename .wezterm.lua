@@ -1,12 +1,73 @@
 local wezterm = require("wezterm")
 
+local function appearance_is_dark(appearance)
+	return appearance:find("Dark")
+end
+
+local custom_light_theme = {
+	foreground = "#2C363C",
+	background = "#F0EDEC",
+	cursor_bg = "#2C363C",
+	cursor_border = "#F0EDEC",
+	cursor_fg = "#F0EDEC",
+	selection_bg = "#CBD9E3",
+	selection_fg = "#2C363C",
+	ansi = { "#F0EDEC", "#A8334C", "#4F6C31", "#944927", "#286486", "#88507D", "#3B8992", "#2C363C" },
+	brights = { "#CFC1BA", "#94253E", "#3F5A22", "#803D1C", "#1D5573", "#7B3B70", "#2B747C", "#4F5E68" },
+	visual_bell = "#DDD6D3",
+	tab_bar = {
+		inactive_tab_edge = "#DDD6D3",
+		background = "#DDD6D3",
+		active_tab = {
+			bg_color = "#F0EDEC",
+			fg_color = "#2C363C",
+		},
+		inactive_tab = {
+			bg_color = "#DDD6D3",
+			fg_color = "#2C363C",
+		},
+		inactive_tab_hover = {
+			bg_color = "#F0EDEC",
+			fg_color = "#2C363C",
+		},
+		new_tab = {
+			bg_color = "#DDD6D3",
+			fg_color = "#2C363C",
+		},
+		new_tab_hover = {
+			bg_color = "#DDD6D3",
+			fg_color = "#2C363C",
+		},
+	},
+}
+
+-- two separate functions because i need to call these in the `return` below
+-- with wezterm.gui.get_appearance(). it _seems_ like that value is like...missing
+-- outside the scope of that return?
+local function get_scheme(appearance)
+	if appearance_is_dark(appearance) then
+		return "zenbones_dark"
+	else
+		return nil
+	end
+end
+
+local function get_colors(appearance)
+	if appearance_is_dark(appearance) then
+		return nil
+	else
+		-- Theme [Modified Zenbones] [Thanks, Salomon]
+		return custom_light_theme
+	end
+end
+
 return {
 	-- Remove top bar
 	window_decorations = "RESIZE",
 
 	-- Style
 	font = wezterm.font_with_fallback({ "Iosevka Term Medium", "Iosevka" }),
-	font_size = 14.0,
+	font_size = 15.0,
 	font_rules = {
 		-- default italic is ugly; use oblique to avoid silly cursive
 		{ italic = true, font = wezterm.font_with_fallback({ "Iosevka Term Oblique", "Iosevka Oblique" }) },
@@ -19,55 +80,13 @@ return {
 		bottom = 0,
 	},
 	use_fancy_tab_bar = false,
-	-- color (not schemae) wins. comment out to use salo's config
-	color_scheme = "zenbones_dark",
-
-	-- Theme [Modified Zenbones] [Thanks, Salomon]
-	colors = {
-		foreground = "#2C363C",
-		background = "#F0EDEC",
-		cursor_bg = "#2C363C",
-		cursor_border = "#F0EDEC",
-		cursor_fg = "#F0EDEC",
-		selection_bg = "#CBD9E3",
-		selection_fg = "#2C363C",
-		ansi = { "#F0EDEC", "#A8334C", "#4F6C31", "#944927", "#286486", "#88507D", "#3B8992", "#2C363C" },
-		brights = { "#CFC1BA", "#94253E", "#3F5A22", "#803D1C", "#1D5573", "#7B3B70", "#2B747C", "#4F5E68" },
-		visual_bell = "#DDD6D3",
-
-		tab_bar = {
-			inactive_tab_edge = "#DDD6D3",
-			background = "#DDD6D3",
-
-			active_tab = {
-				bg_color = "#F0EDEC",
-				fg_color = "#2C363C",
-			},
-
-			inactive_tab = {
-				bg_color = "#DDD6D3",
-				fg_color = "#2C363C",
-			},
-
-			inactive_tab_hover = {
-				bg_color = "#F0EDEC",
-				fg_color = "#2C363C",
-			},
-
-			new_tab = {
-				bg_color = "#DDD6D3",
-				fg_color = "#2C363C",
-			},
-
-			new_tab_hover = {
-				bg_color = "#DDD6D3",
-				fg_color = "#2C363C",
-			},
-		},
-	},
+	color_scheme = get_scheme(wezterm.gui.get_appearance()),
+	colors = get_colors(wezterm.gui.get_appearance()),
 	window_frame = {
 		font = wezterm.font_with_fallback({ "Iosevka Term", "Iosevka" }),
 	},
+	initial_cols = 114,
+	initial_rows = 29,
 
 	-- Bell
 	audible_bell = "Disabled",
