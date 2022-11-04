@@ -1,12 +1,12 @@
--- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "zenbones"
+lvim.colorscheme = "neobones"
 vim.cmd("let g:python3_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')")
+vim.opt.scrolloff = 0 -- Required so L moves to the last line
+vim.opt.showtabline = 0
 
 -- this lets jj work as escape
 vim.cmd("set timeoutlen=300")
-vim.cmd("let @o = 'ysw[iOptionaljjf x;x'") -- optional-ify a python type
 
 lvim.plugins = {
 	{ "mcchrish/zenbones.nvim", requires = "rktjmp/lush.nvim" },
@@ -61,46 +61,66 @@ lvim.plugins = {
 			auto_dark_mode.setup({
 				update_interval = 1000,
 				set_dark_mode = function()
-					vim.cmd("set background=dark")
+					vim.api.nvim_set_option("background", "dark")
+					vim.cmd("colorscheme zenbones")
+					lvim.colorscheme = "zenbones"
 				end,
 				set_light_mode = function()
-					vim.cmd("set background=light")
+					vim.api.nvim_set_option("background", "light")
+					vim.cmd("colorscheme neobones")
+					lvim.colorscheme = "neobones"
 				end,
 			})
 			auto_dark_mode.init()
 		end,
 	},
-	-- {
-	-- 	"lukas-reineke/virt-column.nvim",
-	-- 	config = function()
-	-- 		require("virt-column").setup({ char = " ", virtcolumn = "88" })
-	-- 	end,
-	-- },
+	{
+		"lukas-reineke/virt-column.nvim",
+		config = function()
+			require("virt-column").setup({ char = "┊", virtcolumn = "88" })
+		end,
+		ft = {
+			"python",
+			"lua",
+			"sql",
+			"typescript",
+			"javascript",
+			"typescriptreact",
+			"javascriptreact",
+			"json",
+			"yaml",
+			"toml",
+			"html",
+		},
+	},
 }
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 lvim.keys.normal_mode = {
 	["<leader>O"] = "<cmd>SymbolsOutline<cr>",
-	["<leader>s"] = "", -- get rid of all the builtin sneak stuff
+	["<leader>s"] = false, -- get rid of all the builtin sneak stuff
+	-- ["s"] = "",
 	-- L and H cycled buffers for some reason?
-	["L"] = "",
-	["H"] = "",
+	["L"] = false,
+	["H"] = false,
 	-- these originally aliased the `<C-W>` versions
-	["<C-H>"] = "",
-	["<C-L>"] = "",
+	["<C-H>"] = false,
+	["<C-L>"] = false,
+	["<Space><Space><Space>"] = "<cmd>ToggleTerm<cr>",
 }
 
 lvim.keys.insert_mode = {
 	-- get rid of lvim defaults
-	kj = "",
-	jk = "",
+	kj = false,
+	jk = false,
 	-- embrace tradition
 	jj = "<Esc>",
 }
 
 lvim.keys.term_mode = {
 	["<C-L>"] = "clear<cr>", -- emulate regular
+	["<Space><Space><Space>"] = "<cmd>ToggleTerm<cr>",
 }
 
 -- fzf/spectre ; text search in general
@@ -108,10 +128,13 @@ lvim.builtin.which_key.mappings["f"] = {
 	name = "FZF",
 	f = { "<cmd>FzfLua git_files<cr>", "Files (git)" },
 	F = { "<cmd>FzfLua files<cr>", "Files (all)" },
-	G = { "<cmd>FzfLua git_status<cr>", "Files (modified)" },
-	l = { "<cmd>FzfLua grep_project<cr>", "Lines" },
-	b = { "<cmd>FzfLua buffers<cr>", "Buffers" },
-	U = { "<cmd>FzfLua grep_curbuf<cr>", "Current Buffer" },
+	g = { "<cmd>FzfLua git_status<cr>", "Files (modified)" },
+	l = { "<cmd>lua require('fzf-lua').grep({ search = '', })<cr>", "Lines" },
+	b = {
+		"<cmd>lua require('fzf-lua').buffers({winopts = { width=1.0, height=0.3, row=0, preview = {hidden = 'hidden'} } })<cr>",
+		"Buffers",
+	},
+	u = { "<cmd>FzfLua grep_curbuf<cr>", "Current Buffer" },
 	w = { "<cmd>FzfLua grep_cword<cr>", "Cursor Word" },
 	W = { "<cmd>FzfLua grep_cWORD<cr>", "Cursor WORD" },
 	y = { "<cmd>FzfLua lsp_live_workspace_symbols<cr>", "Workspace Symbols" },
@@ -129,7 +152,7 @@ lvim.builtin.which_key.mappings["t"] = {
 	name = "+Trouble",
 	r = { "<cmd>Trouble lsp_references<cr>", "References" },
 	f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
-	d = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },
+	d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
 	q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
 	l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 	w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
@@ -143,13 +166,26 @@ lvim.builtin.which_key.mappings["b"]["w"] = { "<cmd>BufferKill<cr>", "Kill (Wipe
 
 -- add LspRestart
 lvim.builtin.which_key.mappings["l"]["R"] = { "<cmd>LspRestart<cr>", "Restart" }
+lvim.builtin.which_key.mappings["L"]["h"] = { "<cmd>LvimCacheReset<cr>", "Cache Reset" }
 
--- theme
+-- term
 lvim.builtin.which_key.mappings["m"] = {
 	name = "Ter[m]inal",
 	t = { "<cmd>ToggleTerm<cr>", "Toggle" },
 	s = { "<cmd>ToggleTermSendCurrentLine<cr>", "Send Line" },
 }
+
+lvim.builtin.which_key.mappings["q"] = {
+	name = "Quickfix",
+	n = { "<cmd>cn<cr>", "Next" },
+	p = { "<cmd>cp<cr>", "Previous" },
+	l = { "<cmd>clast<cr>", "Last" },
+	f = { "<cmd>cfirst<cr>", "First" },
+	c = { "<cmd>ccl<cr>", "Close" },
+}
+
+lvim.builtin.which_key.setup["icons"]["separator"] = ":"
+lvim.builtin.which_key.setup["icons"]["group"] = "+"
 
 --misc, mappings that don't begin with <leader>
 lvim.builtin.which_key.on_config_done = function()
@@ -177,18 +213,23 @@ lvim.builtin.which_key.on_config_done = function()
 		m = {
 			name = "Ter[m]inal (V)",
 			t = { "<cmd>ToggleTerm<cr>", "Toggle" },
-			s = { "<cmd>ToggleTermSendCurrentLine<cr>", "Send Line" },
-			v = { "<cmd>ToggleTermSendVisualLines<cr>", "Send VLines" },
+			s = { "<cmd>ToggleTermSendCurrentLine<cr>ToggleTerm<cr>", "Send Line" },
+			v = { "<cmd>ToggleTermSendVisualSelection<cr>", "Send VLines" },
 		},
 	}, { prefix = "<leader>", mode = "v" })
 end
 
--- default mapping steps in front of lightspeed. h8 that.
-lvim.builtin.which_key.mappings["s"] = ""
-
+-- disable things
 lvim.builtin.alpha.active = false
-
+lvim.builtin.project.active = false
+lvim.lsp.automatic_servers_installation = false
+lvim.builtin.bufferline.active = false
+lvim.builtin.dap.active = false
+lvim.builtin.indentlines.active = false
 lvim.builtin.terminal.active = true
+
+-- keep the navic filetype/name indicator out of FZF windows
+table.insert(lvim.builtin.breadcrumbs.winbar_filetype_exclude, "fzf")
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -206,13 +247,9 @@ lvim.builtin.treesitter.ensure_installed = {
 	"scss",
 }
 
+-- treesitter
 lvim.builtin.treesitter.ignore_install = { "haskell", "ruby" }
-lvim.builtin.treesitter.highlight.enabled = true
-
--- generic LSP settings
-lvim.lsp.automatic_servers_installation = false
--- ur killin me, pyright....
--- vim.list_extend(lvim.lsp.override, { "pyright" })
+lvim.builtin.treesitter.highlight.enable = true
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require("lvim.lsp.null-ls.formatters")
@@ -256,7 +293,6 @@ linters.setup({
 	{ exe = "flake8", args = {
 		"--extend-ignore",
 		"E203",
-	} },
-	{ exe = "mypy" },
-	-- { exe = "pylint" },
+	}, filetypes = { "python" } },
+	{ exe = "mypy", filetypes = { "python" } },
 })
