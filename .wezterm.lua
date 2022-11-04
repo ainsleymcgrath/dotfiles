@@ -41,14 +41,11 @@ local custom_light_theme = {
 	},
 }
 
--- two separate functions because i need to call these in the `return` below
--- with wezterm.gui.get_appearance(). it _seems_ like that value is like...missing
--- outside the scope of that return?
 local function get_scheme(appearance)
 	if appearance_is_dark(appearance) then
 		return "zenbones_dark"
 	else
-		return nil
+		return "neobones_light"
 	end
 end
 
@@ -67,7 +64,7 @@ return {
 
 	-- Style
 	font = wezterm.font_with_fallback({ "Iosevka Term Medium", "Iosevka" }),
-	font_size = 15.0,
+	font_size = 15.5,
 	font_rules = {
 		-- default italic is ugly; use oblique to avoid silly cursive
 		{ italic = true, font = wezterm.font_with_fallback({ "Iosevka Term Oblique", "Iosevka Oblique" }) },
@@ -81,7 +78,7 @@ return {
 	},
 	use_fancy_tab_bar = false,
 	color_scheme = get_scheme(wezterm.gui.get_appearance()),
-	colors = get_colors(wezterm.gui.get_appearance()),
+	-- colors = get_colors(wezterm.gui.get_appearance()),
 	window_frame = {
 		font = wezterm.font_with_fallback({ "Iosevka Term", "Iosevka" }),
 	},

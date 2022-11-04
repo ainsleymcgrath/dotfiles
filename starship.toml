@@ -1,26 +1,30 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """$directory$character"""
-right_format = "$cmd_duration $git_branch$git_status $time"
+right_format = "$cmd_duration $git_branch $git_status $time"
 
 [character]
-success_symbol = "[•](bold green)"
+success_symbol = "[•](bold green)" # insert mdoe
 error_symbol = "[×](bold red)"
-vimcmd_symbol = "[○](bold blue)"
+vimcmd_symbol = "[○](bold blue)"   # visual, normal mode
+
+[directory]
+style = "bold bright-white"
 
 [time]
 disabled = false
 time_format = "%d%b%H:%M"
-format = "[$time](dimmed fg:245)"
+format = "[$time](dimmed fg:239)"
 
 [cmd_duration]
 min_time = 1000
-format = "⏱️ [$duration](dimmed fg:245)"
+# 2 spaces to accommodate emoji
+format = "[\\($duration\\)](italic bright-blue)"
 
 [git_branch]
 # remove the word 'on'
-format = "[$symbol$branch(:$remote_branch)]($style)"
+format = "[$symbol$branch(:$remote_branch)](dimmed white)"
 
 [git_status]
 # remove the brackets surrounding the status
-format = '([$all_status$ahead_behind]($style))'
+format = '([$all_status$ahead_behind](purple))'
