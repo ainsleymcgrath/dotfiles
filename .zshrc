@@ -20,6 +20,7 @@ alias wcl="wc -l"
 alias md="mkdir -p"
 alias ezsh="$EDITOR ~/.zshrc"
 alias ewez="$EDITOR ~/.wezterm.lua"
+alias tpra="open -a Typora"
 
 alias wpy="which python"
 alias pyv="python -V"
@@ -77,7 +78,7 @@ alias ull="ul l"
 alias ula="ul a"
 alias ulc="ul c"
 alias ule="ul e"
-alias ultodo="ull completed:false group:c"
+alias ult="clear && ull completed:false group:c"
 
 function show-path() {
    echo $PATH | xargs python -c 'import sys; print("\n".join(sorted(sys.argv[1].split(":"))))'
