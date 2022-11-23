@@ -131,7 +131,10 @@ lvim.builtin.which_key.mappings["f"] = {
 	g = { "<cmd>FzfLua git_status<cr>", "Files (modified)" },
 	l = { "<cmd>lua require('fzf-lua').grep({ search = '', })<cr>", "Lines" },
 	b = {
-		"<cmd>lua require('fzf-lua').buffers({winopts = { width=1.0, height=0.3, row=0, preview = {hidden = 'hidden'} } })<cr>",
+		-- "<cmd>lua require('fzf-lua').buffers({winopts = { width=1.0, height=0.3, row=0, preview = {hidden = 'hidden'} } })<cr>",
+		-- "<cmd>lua require('fzf-lua').buffers({winopts = { width=0.5, height=0.9, row=0, preview = { layout='vertical', vertical='down:80%'} } })<cr>",
+		-- nicely to the right, like a sidebar (prepend prompt with a space)
+		"<cmd>lua require('fzf-lua').buffers({winopts = { width=0.2, height=.98, row=0, col=1, preview = { hidden='hidden' }, border='none' }, prompt = ' Buffers❯'})<cr>",
 		"Buffers",
 	},
 	u = { "<cmd>FzfLua grep_curbuf<cr>", "Current Buffer" },
