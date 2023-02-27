@@ -9,7 +9,7 @@ vim.opt.showtabline = 0
 vim.cmd("set timeoutlen=300")
 
 lvim.plugins = {
-	{ "mcchrish/zenbones.nvim", requires = "rktjmp/lush.nvim" },
+	{ "mcchrish/zenbones.nvim", dependencies = "rktjmp/lush.nvim" },
 	{ "folke/trouble.nvim" },
 	{ "ggandor/lightspeed.nvim" },
 	{ "windwp/nvim-spectre" },
@@ -26,20 +26,24 @@ lvim.plugins = {
 	{ "metakirby5/codi.vim" },
 	{
 		"ibhagwan/fzf-lua",
-		requires = {
+		dependencies = {
 			"vijaymarupudi/nvim-fzf",
-			"kyazdani42/nvim-web-devicons",
+			-- "kyazdani42/nvim-web-devicons",
 		},
 	},
 	{
 		"windwp/nvim-ts-autotag",
 		config = function()
-			require("nvim-ts-autotag").setup()
+			local autotag = require("nvim-ts-autotag.internal")
+			local default_ft = autotag.tbl_filetypes
+			table.insert(default_ft, "heex")
+			table.insert(default_ft, "svelte")
+			require("nvim-ts-autotag").setup({ filetypes = default_ft })
 		end,
 	},
 	{
 		"ruifm/gitlinker.nvim",
-		requires = "nvim-lua/plenary.nvim",
+		dependencies = "nvim-lua/plenary.nvim",
 		config = function()
 			local gitlinker = require("gitlinker")
 			gitlinker.setup({ opts = { action_callback = gitlinker.actions.open_in_browser } })
@@ -62,13 +66,13 @@ lvim.plugins = {
 				update_interval = 1000,
 				set_dark_mode = function()
 					vim.api.nvim_set_option("background", "dark")
-					vim.cmd("colorscheme zenbones")
-					lvim.colorscheme = "zenbones"
+					lvim.colorscheme = "neobones"
+					vim.cmd("colorscheme neobones")
 				end,
 				set_light_mode = function()
 					vim.api.nvim_set_option("background", "light")
-					vim.cmd("colorscheme neobones")
 					lvim.colorscheme = "neobones"
+					vim.cmd("colorscheme neobones")
 				end,
 			})
 			auto_dark_mode.init()
@@ -93,6 +97,8 @@ lvim.plugins = {
 			"html",
 		},
 	},
+	{ "nvim-telescope/telescope-fzy-native.nvim" },
+	{ "kelly-lin/telescope-ag" },
 }
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
@@ -108,6 +114,7 @@ lvim.keys.normal_mode = {
 	["<C-H>"] = false,
 	["<C-L>"] = false,
 	["<Space><Space><Space>"] = "<cmd>ToggleTerm<cr>",
+	["<C-7>"] = ":e #<cr>",
 }
 
 lvim.keys.insert_mode = {
@@ -130,13 +137,7 @@ lvim.builtin.which_key.mappings["f"] = {
 	F = { "<cmd>FzfLua files<cr>", "Files (all)" },
 	g = { "<cmd>FzfLua git_status<cr>", "Files (modified)" },
 	l = { "<cmd>lua require('fzf-lua').grep({ search = '', })<cr>", "Lines" },
-	b = {
-		-- "<cmd>lua require('fzf-lua').buffers({winopts = { width=1.0, height=0.3, row=0, preview = {hidden = 'hidden'} } })<cr>",
-		-- "<cmd>lua require('fzf-lua').buffers({winopts = { width=0.5, height=0.9, row=0, preview = { layout='vertical', vertical='down:80%'} } })<cr>",
-		-- nicely to the right, like a sidebar (prepend prompt with a space)
-		"<cmd>lua require('fzf-lua').buffers({winopts = { width=0.2, height=.98, row=0, col=1, preview = { hidden='hidden' }, border='none' }, prompt = ' Buffers❯'})<cr>",
-		"Buffers",
-	},
+	b = { "<cmd>FzfLua buffers<cr>", "Buffers" },
 	u = { "<cmd>FzfLua grep_curbuf<cr>", "Current Buffer" },
 	w = { "<cmd>FzfLua grep_cword<cr>", "Cursor Word" },
 	W = { "<cmd>FzfLua grep_cWORD<cr>", "Cursor WORD" },
@@ -149,6 +150,11 @@ lvim.builtin.which_key.mappings["f"] = {
 
 	z = { "<cmd>FzfLua builtin<cr>", "All FZF commands" },
 }
+
+lvim.builtin.telescope.on_config_done = function(telescope)
+	pcall(telescope.load_extension, "fzy_native")
+	pcall(telescope.load_extension, "ag")
+end
 
 --trouble
 lvim.builtin.which_key.mappings["t"] = {
@@ -226,10 +232,25 @@ end
 lvim.builtin.alpha.active = false
 lvim.builtin.project.active = false
 lvim.lsp.automatic_servers_installation = false
-lvim.builtin.bufferline.active = false
 lvim.builtin.dap.active = false
 lvim.builtin.indentlines.active = false
 lvim.builtin.terminal.active = true
+
+lvim.builtin.bufferline.active = true
+lvim.builtin.bufferline.options.buffer_close_icon = "⤫"
+lvim.builtin.bufferline.options.modified_icon = "•"
+lvim.builtin.bufferline.options.show_buffer_icons = false
+lvim.builtin.bufferline.options.max_name_length = 44
+
+lvim.builtin.nvimtree.active = true
+lvim.builtin.nvimtree.on_config_done = function(nvimtree)
+	nvimtree.setup({
+		renderer = {
+			icons = { show = { file = false, folder = false } },
+		},
+	})
+end
+-- lvim.builtin.nvimtree.
 
 -- keep the navic filetype/name indicator out of FZF windows
 table.insert(lvim.builtin.breadcrumbs.winbar_filetype_exclude, "fzf")
@@ -279,15 +300,6 @@ formatters.setup({
 			"markdown",
 		},
 	},
-	{
-		exe = "eslint",
-		filetypes = {
-			"typescript",
-			"typescriptreact",
-			"javascript",
-			"javascriptreact",
-		},
-	},
 })
 
 -- set additional linters
@@ -298,4 +310,15 @@ linters.setup({
 		"E203",
 	}, filetypes = { "python" } },
 	{ exe = "mypy", filetypes = { "python" } },
+	-- TODO make this ftplugin so you can check for it
+	-- { exe = "pylint 2> /dev/null", filetypes = { "python" } },
+	{
+		exe = "eslint",
+		filetypes = {
+			"typescript",
+			"typescriptreact",
+			"javascript",
+			"javascriptreact",
+		},
+	},
 })

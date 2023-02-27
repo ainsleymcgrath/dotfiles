@@ -6,7 +6,7 @@ end
 
 local function get_scheme(appearance)
 	if appearance_is_dark(appearance) then
-		return "zenbones_dark"
+		return "neobones_dark"
 	else
 		return "neobones_light"
 	end
@@ -14,49 +14,21 @@ end
 
 -- comment in when using modified zenbones theme
 -- (using neobones as light theme for now, so `colors` config setting not neded)
--- local function get_colors(appearance)
--- 	if appearance_is_dark(appearance) then
--- 		return nil
--- 	else
--- 		-- Theme [Modified Zenbones] [Thanks, Salomon]
--- 		return {
--- 			foreground = "#2C363C",
--- 			background = "#F0EDEC",
--- 			cursor_bg = "#2C363C",
--- 			cursor_border = "#F0EDEC",
--- 			cursor_fg = "#F0EDEC",
--- 			selection_bg = "#CBD9E3",
--- 			selection_fg = "#2C363C",
--- 			ansi = { "#F0EDEC", "#A8334C", "#4F6C31", "#944927", "#286486", "#88507D", "#3B8992", "#2C363C" },
--- 			brights = { "#CFC1BA", "#94253E", "#3F5A22", "#803D1C", "#1D5573", "#7B3B70", "#2B747C", "#4F5E68" },
--- 			visual_bell = "#DDD6D3",
--- 			tab_bar = {
--- 				inactive_tab_edge = "#DDD6D3",
--- 				background = "#DDD6D3",
--- 				active_tab = {
--- 					bg_color = "#F0EDEC",
--- 					fg_color = "#2C363C",
--- 				},
--- 				inactive_tab = {
--- 					bg_color = "#DDD6D3",
--- 					fg_color = "#2C363C",
--- 				},
--- 				inactive_tab_hover = {
--- 					bg_color = "#F0EDEC",
--- 					fg_color = "#2C363C",
--- 				},
--- 				new_tab = {
--- 					bg_color = "#DDD6D3",
--- 					fg_color = "#2C363C",
--- 				},
--- 				new_tab_hover = {
--- 					bg_color = "#DDD6D3",
--- 					fg_color = "#2C363C",
--- 				},
--- 			},
--- 		}
--- 	end
--- end
+local function get_colors(appearance)
+	if appearance_is_dark(appearance) then
+		return {
+			-- customize to match neobones_dark
+			tab_bar = {
+				background = "#0F191F",
+				inactive_tab = { bg_color = "#0F191F", fg_color = "#4A5E6A" },
+				active_tab = { bg_color = "#66A5AD", fg_color = "#FFFFFF" },
+				new_tab = { bg_color = "#1C2A32", fg_color = "#4A5E6A" },
+			},
+		}
+	else
+		return {}
+	end
+end
 
 return {
 	-- Remove top bar
@@ -70,6 +42,7 @@ return {
 		{ italic = true, font = wezterm.font_with_fallback({ "Iosevka Term Oblique", "Iosevka Oblique" }) },
 	},
 	hide_tab_bar_if_only_one_tab = true,
+	tab_max_width = 44,
 	window_padding = {
 		left = "0.7cell",
 		right = "0.7cell",
@@ -78,7 +51,7 @@ return {
 	},
 	use_fancy_tab_bar = false,
 	color_scheme = get_scheme(wezterm.gui.get_appearance()),
-	-- colors = get_colors(wezterm.gui.get_appearance()),
+	colors = get_colors(wezterm.gui.get_appearance()),
 	window_frame = {
 		font = wezterm.font_with_fallback({ "Iosevka Term", "Iosevka" }),
 	},
