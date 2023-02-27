@@ -10,6 +10,7 @@ bindkey '^[[B' history-substring-search-down
 export HISTORY_SUBSTRING_SEARCH_PREFIXED=1
 
 export EDITOR="lvim"
+alias lvim="nvm use node && $EDITOR"
 export BAT_THEME="base16"
 export HISTCONTROL=ignoreboth:erasedups
 export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout reverse-list --preview '(bat --color=always --style=numbers --line-range :500 {} || exa -T --color=always {}) 2> /dev/null'"
@@ -46,6 +47,9 @@ alias lt="exa -T --git-ignore"
 
 alias bap="bat -P --style plain"
 
+alias pbc="pbcopy"
+alias pbp="pbpaste"
+
 source ~/.git-aliases
 alias gcoh="gco HEAD -- "
 alias gcom="gco master -- 2> /dev/null || gco main -- 2> /dev/null"
@@ -56,9 +60,14 @@ alias glo10="glo -n10"
 alias gsdt="gd --stat"
 alias gsbm="gsb master.."
 alias gdstm="gd --stat master.. 2> /dev/null || gd --stat main.."
+alias grhho="grhh origin/$(git branch --show-current) "
+
 function gp() {
   git push -u origin $(gb --show-current) "$@"
 }
+
+alias "gp!"="gp -f"
+
 function gcopb() {
   branch=$(pbpaste)
   git checkout "$branch" "$@" 2> /dev/null \
@@ -74,11 +83,11 @@ alias slv="serverless config validate"
 alias pc="pre-commit"
 
 alias ul="ultralist"
-alias ull="ul l"
+alias ull="clear && ul l group:p"
 alias ula="ul a"
 alias ulc="ul c"
 alias ule="ul e"
-alias ult="clear && ull completed:false group:c"
+alias ult="clear && ull completed:false group:p"
 
 function show-path() {
    echo $PATH | xargs python -c 'import sys; print("\n".join(sorted(sys.argv[1].split(":"))))'
@@ -156,6 +165,10 @@ function cwd-mkvenv() {
 
 function fzfig () {
   figlet -f "$(figlet -l | fzf --preview "figlet -f {} $1" --preview-window=right,75%)" $1 | pbcopy
+}
+
+function fzjson() {
+  jq -c '.[]' | fzf --preview 'echo {} | prettier --parser json | bat --color=always --language json'
 }
 
 
