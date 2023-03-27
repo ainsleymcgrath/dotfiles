@@ -7,7 +7,9 @@ setopt HIST_IGNORE_ALL_DUPS
 # https://github.com/zsh-users/zsh-history-substring-search
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-export HISTORY_SUBSTRING_SEARCH_PREFIXED=1
+# export HISTORY_SUBSTRING_SEARCH_PREFIXED=1
+export HISTORY_SUBSTRING_SEARCH_FUZZY=1
+export HISTSIZE=200000
 
 export EDITOR="lvim"
 alias lvim="nvm use node && $EDITOR"
