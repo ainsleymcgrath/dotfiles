@@ -186,6 +186,7 @@ lvim.builtin.which_key.mappings["m"] = {
 
 lvim.builtin.which_key.mappings["q"] = {
 	name = "Quickfix",
+	o = { "<cmd>copen<cr>", "Open" },
 	n = { "<cmd>cn<cr>", "Next" },
 	p = { "<cmd>cp<cr>", "Previous" },
 	l = { "<cmd>clast<cr>", "Last" },
