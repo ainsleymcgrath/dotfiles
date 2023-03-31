@@ -62,7 +62,10 @@ alias glo10="glo -n10"
 alias gsdt="gd --stat"
 alias gsbm="gsb master.."
 alias gdstm="gd --stat master.. 2> /dev/null || gd --stat main.."
-alias grhho="grhh origin/$(git branch --show-current) "
+
+function grhho() {
+  "grhh origin/$(git branch --show-current) "
+}
 
 function gp() {
   git push -u origin $(gb --show-current) "$@"
