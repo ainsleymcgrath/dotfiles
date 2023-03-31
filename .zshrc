@@ -153,11 +153,6 @@ function fzfa() {
 
 # make a venv named after current dir
 function cwd-mkvenv() {
-  if [[ ! -e .python-version ]]; then
-    echo 'No .python-version found. Exiting.'
-    return
-  fi
-
   python -m venv .venv
   .venv/bin/python -m pip install --upgrade pip
   pyin
