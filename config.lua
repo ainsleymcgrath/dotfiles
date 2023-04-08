@@ -281,10 +281,10 @@ local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	{ exe = "black" },
 	{
-		exe = "isort",
+		exe = "ruff",
 		args = {
-			"--profile",
-			"black",
+			"--fix",
+			"-q",
 		},
 	},
 	{ exe = "stylua" },
@@ -306,11 +306,8 @@ formatters.setup({
 -- set additional linters
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
-	{ exe = "flake8", args = {
-		"--extend-ignore",
-		"E203",
-	}, filetypes = { "python" } },
 	{ exe = "mypy", filetypes = { "python" } },
+	{ exe = "ruff", filetypes = { "python" } },
 	-- TODO make this ftplugin so you can check for it
 	-- { exe = "pylint 2> /dev/null", filetypes = { "python" } },
 	{
