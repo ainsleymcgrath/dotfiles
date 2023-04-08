@@ -192,6 +192,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # settings for zsh-vi-mode
 export ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 
+eval "$(direnv hook zsh)"
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
