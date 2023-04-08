@@ -193,15 +193,10 @@ export PATH="$HOME/.local/bin:$PATH"
 export ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 
 eval "$(direnv hook zsh)"
+
 # After-hook
 if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
-fi
-
-# todos at the top of the hour
-current_minute=$(date +"%M")
-if [[ "$current_minute" < 10 ]]; then
-  ult
 fi
 
 # # zprof
