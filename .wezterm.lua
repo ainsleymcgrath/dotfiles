@@ -26,7 +26,14 @@ local function get_colors(appearance)
 			},
 		}
 	else
-		return {}
+		return {
+			tab_bar = {
+				background = "#E5EDE6",
+				inactive_tab = { bg_color = "#E5EDE6", fg_color = "#4A5E6A" },
+				active_tab = { bg_color = "#D3ADCB", fg_color = "#000000" },
+				new_tab = { bg_color = "#E5EDE6", fg_color = "#4A5E6A" },
+			},
+		}
 	end
 end
 
