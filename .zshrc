@@ -79,6 +79,55 @@ function gcopb() {
     || git checkout -b "$branch"
 }
 
+function toreview() {
+  prs=$(
+    gh search prs --state=open --review-requested=@me \
+      --json title,repository,id,number \
+      --template '{{range .}}{{tablerow .repository.nameWithOwner "#" ( printf "%.0f" .number ) .title }}{{end}}'
+  )
+
+  if [[ -z "$prs" ]]; then
+    echo "Nothing to review! 🎉"
+    return
+  fi
+
+  picked=$(echo "$prs" | fzf --height '~20%')
+  if [[ -z "$picked" ]]; then
+    return
+  fi
+
+  cmd=$(echo "$picked" | awk '{
+    print "gh pr view " $3 " -R " $1 " --web"
+  }')
+
+  eval "$cmd"
+}
+
+function ineedreview() {
+  prs=$(
+    gh search prs --state=open --author=@me \
+      --json title,repository,id,number \
+      --template '{{range .}}{{tablerow .repository.nameWithOwner "#" ( printf "%.0f" .number ) .title }}{{end}}'
+  )
+
+  if [[ -z "$prs" ]]; then
+    echo "Nothing open! 🎉"
+    return
+  fi
+
+  picked=$(echo "$prs" | fzf --height '~20%')
+  if [[ -z "$picked" ]]; then
+    return
+  fi
+
+  cmd=$(echo "$picked" | awk '{
+    print "gh pr view " $3 " -R " $1 " --web"
+  }')
+
+  eval "$cmd"
+}
+
+
 alias doco="docker compose"
 
 alias civ="circleci config validate"
