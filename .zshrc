@@ -105,8 +105,8 @@ function toreview() {
 }
 
 function ineedreview() {
+  # differs from above in lack of author fyi
   prs=$(
-    # differs from above in lack of author fyi
     gh search prs --state=open --author=@me \
       --json title,repository,id,number \
       --template '{{range .}}{{tablerow .repository.nameWithOwner "#" ( printf "%.0f" .number ) .title }}{{end}}'
