@@ -81,10 +81,11 @@ function gcopb() {
 
 function toreview() {
   prs=$(
-    gh search prs --state=open --review-requested=@me \
-      --json title,repository,id,number \
-      --template '{{range .}}{{tablerow .repository.nameWithOwner "#" ( printf "%.0f" .number ) .title }}{{end}}'
+    gh search prs --review-requested=@me --state=open \
+      --json title,repository,id,number,author \
+      --template '{{range .}}{{tablerow .repository.nameWithOwner .author.login "#" ( printf "%.0f" .number ) .title }}{{end}}'
   )
+  # ^ there's a space before and after # do avoid having to strip it off the PR number before `gh pr view` below
 
   if [[ -z "$prs" ]]; then
     echo "Nothing to review! 🎉"
@@ -97,7 +98,7 @@ function toreview() {
   fi
 
   cmd=$(echo "$picked" | awk '{
-    print "gh pr view " $3 " -R " $1 " --web"
+    print "gh pr view " $4 " -R " $1 " --web"
   }')
 
   eval "$cmd"
@@ -105,6 +106,7 @@ function toreview() {
 
 function ineedreview() {
   prs=$(
+    # differs from above in lack of author fyi
     gh search prs --state=open --author=@me \
       --json title,repository,id,number \
       --template '{{range .}}{{tablerow .repository.nameWithOwner "#" ( printf "%.0f" .number ) .title }}{{end}}'
