@@ -22,7 +22,12 @@ lvim.plugins = {
 		end,
 	},
 	{ "tpope/vim-repeat" },
-	{ "tpope/vim-surround" },
+	{
+		"tpope/vim-surround",
+		init = function()
+			vim.o.timeoutlen = 500
+		end,
+	},
 	{ "metakirby5/codi.vim" },
 	{
 		"ibhagwan/fzf-lua",
@@ -231,11 +236,14 @@ end
 
 -- disable things
 lvim.builtin.alpha.active = false
-lvim.builtin.project.active = false
 lvim.lsp.automatic_servers_installation = false
 lvim.builtin.dap.active = false
 lvim.builtin.indentlines.active = false
 lvim.builtin.terminal.active = true
+
+table.insert(lvim.builtin.project.patterns, "pyproject.toml")
+table.insert(lvim.builtin.project.patterns, "requirements.txt")
+table.insert(lvim.builtin.project.patterns, "setup.py")
 
 lvim.builtin.bufferline.active = true
 lvim.builtin.bufferline.options.buffer_close_icon = "⤫"
@@ -251,7 +259,6 @@ lvim.builtin.nvimtree.on_config_done = function(nvimtree)
 		},
 	})
 end
--- lvim.builtin.nvimtree.
 
 -- keep the navic filetype/name indicator out of FZF windows
 table.insert(lvim.builtin.breadcrumbs.winbar_filetype_exclude, "fzf")
