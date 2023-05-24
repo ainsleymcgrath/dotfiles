@@ -222,6 +222,10 @@ function fzjson() {
   jq -c '.[]' | fzf --preview 'echo {} | prettier --parser json | bat --color=always --language json'
 }
 
+function wf() {
+  wd $(wd list | grep -v 'All' | fzf --height  $(($(wd list | wc -l) + 1)) | xargs echo | awk '{print $1}')
+}
+
 
 eval "$(fnm env)"
 alias nvm="fnm"
