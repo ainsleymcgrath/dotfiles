@@ -1,6 +1,7 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "neobones"
+
+lvim.colorscheme = "zenbones"
 vim.cmd("let g:python3_host_prog = expand('~/.config/nvim/neovim_venv/bin/python3')")
 vim.opt.scrolloff = 0 -- Required so L moves to the last line
 vim.opt.showtabline = 0
@@ -34,6 +35,18 @@ lvim.plugins = {
 		dependencies = {
 			"vijaymarupudi/nvim-fzf",
 			-- "kyazdani42/nvim-web-devicons",
+		},
+		opts = {
+			on_create = function()
+				vim.keymap.set("t", "<C-j>", "<Down>", { silent = true, buffer = true })
+				vim.keymap.set("t", "<C-k>", "<Up>", { silent = true, buffer = true })
+			end,
+			-- buffers = {
+			-- 	-- previewer = false,
+			-- 	-- fzf_opts = {
+			-- 	-- 	["--preview"] = nil,
+			-- 	-- },
+			-- },
 		},
 	},
 	{
@@ -71,13 +84,13 @@ lvim.plugins = {
 				update_interval = 1000,
 				set_dark_mode = function()
 					vim.api.nvim_set_option("background", "dark")
-					lvim.colorscheme = "neobones"
-					vim.cmd("colorscheme neobones")
+					lvim.colorscheme = "zenbones"
+					vim.cmd("colorscheme zenbones")
 				end,
 				set_light_mode = function()
 					vim.api.nvim_set_option("background", "light")
-					lvim.colorscheme = "neobones"
-					vim.cmd("colorscheme neobones")
+					lvim.colorscheme = "zenbones"
+					vim.cmd("colorscheme zenbones")
 				end,
 			})
 			auto_dark_mode.init()
@@ -104,6 +117,13 @@ lvim.plugins = {
 	},
 	{ "nvim-telescope/telescope-fzy-native.nvim" },
 	{ "kelly-lin/telescope-ag" },
+	-- { "ten3roberts/window-picker.}nvim" },
+	{
+		"s1n7ax/nvim-window-picker",
+		config = function()
+			require("window-picker").setup()
+		end,
+	},
 }
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
@@ -120,6 +140,7 @@ lvim.keys.normal_mode = {
 	["<C-L>"] = false,
 	["<Space><Space><Space>"] = "<cmd>ToggleTerm<cr>",
 	["<C-7>"] = ":e #<cr>",
+	["E"] = "<cmd>NvimTreeFindFile<cr>",
 }
 
 lvim.keys.insert_mode = {
@@ -138,8 +159,8 @@ lvim.keys.term_mode = {
 -- fzf/spectre ; text search in general
 lvim.builtin.which_key.mappings["f"] = {
 	name = "FZF",
-	f = { "<cmd>FzfLua git_files<cr>", "Files (git)" },
-	F = { "<cmd>FzfLua files<cr>", "Files (all)" },
+	f = { "<cmd>FzfLua files<cr>", "Files (all)" },
+	F = { "<cmd>FzfLua git_files<cr>", "Files (git)" },
 	g = { "<cmd>FzfLua git_status<cr>", "Files (modified)" },
 	l = { "<cmd>lua require('fzf-lua').grep({ search = '', })<cr>", "Lines" },
 	b = { "<cmd>FzfLua buffers<cr>", "Buffers" },
@@ -181,6 +202,7 @@ lvim.builtin.which_key.mappings["b"]["w"] = { "<cmd>BufferKill<cr>", "Kill (Wipe
 -- add LspRestart
 lvim.builtin.which_key.mappings["l"]["R"] = { "<cmd>LspRestart<cr>", "Restart" }
 lvim.builtin.which_key.mappings["L"]["h"] = { "<cmd>LvimCacheReset<cr>", "Cache Reset" }
+lvim.builtin.which_key.mappings["L"]["s"] = { "<cmd>LvimSyncCorePlugins<cr>", "Sync Core Plugins" }
 
 -- term
 lvim.builtin.which_key.mappings["m"] = {
@@ -197,6 +219,15 @@ lvim.builtin.which_key.mappings["q"] = {
 	l = { "<cmd>clast<cr>", "Last" },
 	f = { "<cmd>cfirst<cr>", "First" },
 	c = { "<cmd>ccl<cr>", "Close" },
+}
+
+lvim.builtin.which_key.mappings["n"] = {
+	name = "Wi[n]dows",
+	w = { "<cmd> lua require('window-picker').pick_window() <cr>", "Pick" },
+	q = { "<C-w><C-q>", "Close" },
+	-- s = {
+	--    l  = {"C-w"}
+	--  },
 }
 
 lvim.builtin.which_key.setup["icons"]["separator"] = ":"
@@ -236,7 +267,6 @@ end
 
 -- disable things
 lvim.builtin.alpha.active = false
-lvim.lsp.automatic_servers_installation = false
 lvim.builtin.dap.active = false
 lvim.builtin.indentlines.active = false
 lvim.builtin.terminal.active = true
@@ -264,6 +294,8 @@ end
 table.insert(lvim.builtin.breadcrumbs.winbar_filetype_exclude, "fzf")
 
 -- if you don't want all the parsers change this to a table of the ones you want
+lvim.lsp.automatic_servers_installation = false
+
 lvim.builtin.treesitter.ensure_installed = {
 	-- languages
 	"bash",
@@ -287,13 +319,6 @@ lvim.builtin.treesitter.highlight.enable = true
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	{ exe = "black" },
-	{
-		exe = "ruff",
-		args = {
-			"--fix",
-			"-q",
-		},
-	},
 	{ exe = "stylua" },
 	{
 		exe = "prettier",
@@ -314,9 +339,6 @@ formatters.setup({
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	{ exe = "mypy", filetypes = { "python" } },
-	{ exe = "ruff", filetypes = { "python" } },
-	-- TODO make this ftplugin so you can check for it
-	-- { exe = "pylint 2> /dev/null", filetypes = { "python" } },
 	{
 		exe = "eslint",
 		filetypes = {
@@ -326,4 +348,5 @@ linters.setup({
 			"javascriptreact",
 		},
 	},
+	-- { exe = "sqlfluff", args = { "fix" }, filetypes = { "sql" } },
 })

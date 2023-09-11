@@ -6,9 +6,9 @@ end
 
 local function get_scheme(appearance)
 	if appearance_is_dark(appearance) then
-		return "neobones_dark"
+		return "zenbones_dark"
 	else
-		return "neobones_light"
+		return "zenbones_light"
 	end
 end
 
@@ -18,6 +18,7 @@ local function get_colors(appearance)
 	if appearance_is_dark(appearance) then
 		return {
 			-- customize to match neobones_dark
+			-- ...
 			tab_bar = {
 				background = "#0F191F",
 				inactive_tab = { bg_color = "#0F191F", fg_color = "#4A5E6A" },
@@ -27,11 +28,37 @@ local function get_colors(appearance)
 		}
 	else
 		return {
+			-- neobones
+			-- tab_bar = {
+			-- 	background = "#E5EDE6",
+			-- 	inactive_tab = { bg_color = "#E5EDE6", fg_color = "#4A5E6A" },
+			-- 	active_tab = { bg_color = "#D3ADCB", fg_color = "#000000" },
+			-- 	new_tab = { bg_color = "#E5EDE6", fg_color = "#4A5E6A" },
+			-- },
+			-- zenbones
 			tab_bar = {
-				background = "#E5EDE6",
-				inactive_tab = { bg_color = "#E5EDE6", fg_color = "#4A5E6A" },
-				active_tab = { bg_color = "#D3ADCB", fg_color = "#000000" },
-				new_tab = { bg_color = "#E5EDE6", fg_color = "#4A5E6A" },
+				inactive_tab_edge = "#DDD6D3",
+				background = "#DDD6D3",
+				active_tab = {
+					bg_color = "#F0EDEC",
+					fg_color = "#2C363C",
+				},
+				inactive_tab = {
+					bg_color = "#DDD6D3",
+					fg_color = "#2C363C",
+				},
+				inactive_tab_hover = {
+					bg_color = "#F0EDEC",
+					fg_color = "#2C363C",
+				},
+				new_tab = {
+					bg_color = "#DDD6D3",
+					fg_color = "#2C363C",
+				},
+				new_tab_hover = {
+					bg_color = "#DDD6D3",
+					fg_color = "#2C363C",
+				},
 			},
 		}
 	end
@@ -43,7 +70,7 @@ return {
 
 	-- Style
 	font = wezterm.font_with_fallback({ "Iosevka Term Medium", "Iosevka" }),
-	font_size = 15.5,
+	font_size = 15,
 	font_rules = {
 		-- default italic is ugly; use oblique to avoid silly cursive
 		{ italic = true, font = wezterm.font_with_fallback({ "Iosevka Term Oblique", "Iosevka Oblique" }) },
@@ -62,8 +89,8 @@ return {
 	window_frame = {
 		font = wezterm.font_with_fallback({ "Iosevka Term", "Iosevka" }),
 	},
-	initial_cols = 114,
-	initial_rows = 29,
+	initial_cols = 96,
+	initial_rows = 20,
 
 	-- Bell
 	audible_bell = "Disabled",
