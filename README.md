@@ -2,22 +2,9 @@
 
 My setup for nvim, tmux, zsh, some packages from homebrew, and other assorted tools.
 
-Powered by [nothing](github.com/ainsleymcgrath/nothing).
+I *think* this should cover it:
 
-## Usage
-
-The process for installing everything is in `sample.yml` under `.nothing/`.
-
-Before you can run it, you need (ironically, yes) [Python](https://www.python.org/downloads/release/python-383/) and [pip](https://pip.pypa.io/en/stable/installing/). Download them, and then restart your terminal.
-
-Get `nothing-cli`:
-
-```shell
-pip install nothing-cli
+```
+make
 ```
 
-Run the `setup` procedure.
-
-```shell
-not do setup
-```
