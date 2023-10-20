@@ -333,6 +333,10 @@ formatters.setup({
 			"markdown",
 		},
 	},
+	{
+		name = "sqlfluff",
+		extra_args = { "--dialect", "postgres" },
+	},
 })
 
 -- set additional linters
@@ -348,5 +352,8 @@ linters.setup({
 			"javascriptreact",
 		},
 	},
-	-- { exe = "sqlfluff", args = { "fix" }, filetypes = { "sql" } },
+	{
+		name = "sqlfluff",
+		extra_args = { "--dialect", "postgres" },
+	},
 })
