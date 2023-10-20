@@ -227,6 +227,8 @@ function wf() {
 }
 
 
+source "$HOME/.cargo/env"
+
 eval "$(fnm env)"
 alias nvm="fnm"
  
@@ -253,5 +255,6 @@ eval "$(direnv hook zsh)"
 if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
+
 
 # # zprof
