@@ -2,18 +2,24 @@
 
 # rust
 if [[ -z $(which cargo) ]]; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 else
-  echo "Rust already installed"
+	echo "Rust already installed"
 fi
 
 # fzf extras
-"$(brew --prefix)"/opt/fzf/install --key-bindings --no-completion --no-update-rc  --no-bash --no-zsh --no-fish
+"$(brew --prefix)"/opt/fzf/install --key-bindings --no-completion --no-update-rc --no-bash --no-zsh --no-fish
 #
 # lunarvim
 if [[ -z $(which lvim) ]]; then
-    LV_BRANCH='release-1.3/neovim-0.9' bash <(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh) 
+	LV_BRANCH='release-1.3/neovim-0.9' bash <(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh)
 else
-  echo "LunarVim already installed"
+	echo "LunarVim already installed"
 fi
 
+# haskell
+if [[ -z $(which ghc) ]]; then
+	curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+else
+	echo "Haskell already installed"
+fi
