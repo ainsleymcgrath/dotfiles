@@ -1,5 +1,5 @@
 # zmodload zsh/zprof
-source ~/.zgenom/sources/init.zsh;
+source ~/.zgenom/sources/init.zsh
 
 setopt auto_cd
 setopt HIST_IGNORE_ALL_DUPS
@@ -15,7 +15,7 @@ export EDITOR="lvim"
 alias lvim="nvm use node && $EDITOR"
 export BAT_THEME="base16"
 export HISTCONTROL=ignoreboth:erasedups
-export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout reverse-list --preview '(bat --color=always --style=numbers --line-range :500 {} || exa -T --color=always {}) 2> /dev/null'"
+export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout reverse-list --preview '(bat --color=always --style=numbers --line-range :500 {} || eza -T --color=always {}) 2> /dev/null'"
 
 alias c="clear"
 alias soz=". ~/.zshrc"
@@ -39,13 +39,16 @@ alias po="poetry"
 alias poed="poetry run lvim"
 export PATH="$HOME/.poetry/bin:$PATH"
 
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/Applications/Postgres.app/Contents/Versions/16/bin:$PATH"
+
 alias txl="tmux ls"
 alias _txk="tmux kill-session -t"
 alias mux="tmuxinator"
 
-alias l="exa -1a"
-alias ll="exa -la"
-alias lt="exa -T --git-ignore"
+alias l="eza -1a"
+alias ll="eza -la"
+alias lt="eza -T --git-ignore"
 
 alias bap="bat -P --style plain"
 
@@ -75,8 +78,8 @@ alias "gp!"="gp -f"
 
 function gcopb() {
   branch=$(pbpaste)
-  git checkout "$branch" "$@" 2> /dev/null \
-    || git checkout -b "$branch"
+  git checkout "$branch" "$@" 2>/dev/null ||
+    git checkout -b "$branch"
 }
 
 function toreview() {
@@ -129,7 +132,6 @@ function ineedreview() {
   eval "$cmd"
 }
 
-
 alias doco="docker compose"
 
 alias civ="circleci config validate"
@@ -146,7 +148,7 @@ alias ule="ul e"
 alias ult="clear && ull completed:false group:p"
 
 function show-path() {
-   echo $PATH | xargs python -c 'import sys; print("\n".join(sorted(sys.argv[1].split(":"))))'
+  echo $PATH | xargs python -c 'import sys; print("\n".join(sorted(sys.argv[1].split(":"))))'
 }
 
 alias marp-serve="npx @marp-team/marp-cli@latest -w"
@@ -154,46 +156,45 @@ alias marp-serve="npx @marp-team/marp-cli@latest -w"
 alias black_modified="gsb | rg '.py' | sd '^\s{0,2}[A-Z?]{1,2}|#.*' '' | xargs black"
 
 function txk() {
-    for session_name in "$@"
-    do
-        _txk $session_name
-    done
+  for session_name in "$@"; do
+    _txk $session_name
+  done
 }
 
 # 'tmux attach' :
 # attach to last tmux session or specify one
 # $1=taget session
 function txa() {
-    if [[ -z ${1} ]]; then
-        tmux -CC attach
-    else
-        tmux -CC attach -t $1
-    fi
+  if [[ -z ${1} ]]; then
+    tmux -CC attach
+  else
+    tmux -CC attach -t $1
+  fi
 }
 
 # 'tmux new' :
 # $1=session name [default=pwd]
 function txn() {
-    if [[ -z ${1} ]]; then
-        tmux new -c $(pwd)
-    else 
-        tmux new -s $1 -c $(pwd)
-    fi
+  if [[ -z ${1} ]]; then
+    tmux new -c $(pwd)
+  else
+    tmux new -s $1 -c $(pwd)
+  fi
 }
 
 # reboots a session
 # $1=session name
 function muxrestart() {
-    tmuxinator stop $1
-    tmuxinator start $1
+  tmuxinator stop $1
+  tmuxinator start $1
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # list all homebrew packages and show their info
 function fzfbrew() {
-   brew list -1 -t | sort | fzf -m --preview="brew info {}"
-} 
+  brew list -1 -t | sort | fzf -m --preview="brew info {}"
+}
 
 # fuzzy search & checkout git branch
 function fzb() {
@@ -214,7 +215,7 @@ function cwd-mkvenv() {
   echo '. ./.venv/bin/activate' | pbcopy
 }
 
-function fzfig () {
+function fzfig() {
   figlet -f "$(figlet -l | fzf --preview "figlet -f {} $1" --preview-window=right,75%)" $1 | pbcopy
 }
 
@@ -223,25 +224,22 @@ function fzjson() {
 }
 
 function wf() {
-  wd $(wd list | grep -v 'All' | fzf --height  $(($(wd list | wc -l) + 1)) | xargs echo | awk '{print $1}')
+  wd $(wd list | grep -v 'All' | fzf --height $(($(wd list | wc -l) + 1)) | xargs echo | awk '{print $1}')
 }
-
 
 source "$HOME/.cargo/env"
 
 eval "$(fnm env)"
 alias nvm="fnm"
- 
+
 eval "$(zoxide init zsh)"
-# 
+#
 # export EE_EXTRA_DATETIME_INPUT_FORMATS='["MMM D YY", "MMM D", "MMMD", "ddd"]'
-# 
+#
 # export FLYCTL_INSTALL="/Users/ains/.fly"
 # export PATH="$FLYCTL_INSTALL/bin:$PATH"
-# 
+#
 eval "$(pyenv init -)"
-
-eval "$(starship init zsh)"
 
 # lvim, python executables end up here
 export PATH="$HOME/.local/bin:$PATH"
@@ -256,5 +254,7 @@ if [ -f ~/.zshrc_local_after ]; then
   source ~/.zshrc_local_after
 fi
 
+eval "$(starship init zsh)"
+eval "$(fzf --zsh)"
 
 # # zprof
