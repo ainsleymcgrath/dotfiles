@@ -69,11 +69,11 @@ return {
 	window_decorations = "RESIZE",
 
 	-- Style
-	font = wezterm.font_with_fallback({ "Iosevka Term Medium", "Iosevka" }),
+	font = wezterm.font_with_fallback({ "IosevkaTerm Nerd Font", "Iosevka Nerd Font", "IosevkaTerm" }),
 	font_size = 15,
 	font_rules = {
 		-- default italic is ugly; use oblique to avoid silly cursive
-		{ italic = true, font = wezterm.font_with_fallback({ "Iosevka Term Oblique", "Iosevka Oblique" }) },
+		{ italic = true, font = wezterm.font_with_fallback({ "IosevkaTerm Nerd Font", "Iosevka Nerd Font", "IosevkaTerm" }) },
 	},
 	hide_tab_bar_if_only_one_tab = true,
 	tab_max_width = 44,
@@ -87,7 +87,7 @@ return {
 	color_scheme = get_scheme(wezterm.gui.get_appearance()),
 	colors = get_colors(wezterm.gui.get_appearance()),
 	window_frame = {
-		font = wezterm.font_with_fallback({ "Iosevka Term", "Iosevka" }),
+		font = wezterm.font_with_fallback({ "IosevkaTerm Nerd Font", "Iosevka Nerd Font", "IosevkaTerm" }),
 	},
 	initial_cols = 96,
 	initial_rows = 20,
