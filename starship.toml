@@ -9,7 +9,7 @@ error_symbol = "[×](bold red)"
 vimcmd_symbol = "[○](bold blue)"   # visual, normal mode
 
 [directory]
-style = "bold bright-white"
+style = "bold bright-purple"
 
 [time]
 disabled = false

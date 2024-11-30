@@ -1,5 +1,5 @@
 .zshrc | $HOME/.zshrc
 starship.toml | $HOME/.config/starship.toml
 .wezterm.lua | $HOME/.wezterm.lua
-config.lua | $HOME/.config/lvim/config.lua
 .git-aliases | $HOME/.git-aliases
+nvim/* | $HOME/.config/nvim

@@ -11,8 +11,7 @@ bindkey '^[[B' history-substring-search-down
 export HISTORY_SUBSTRING_SEARCH_FUZZY=1
 export HISTSIZE=200000
 
-export EDITOR="lvim"
-alias lvim="nvm use node && $EDITOR"
+export EDITOR="nvim"
 export BAT_THEME="base16"
 export HISTCONTROL=ignoreboth:erasedups
 export FZF_CTRL_T_OPTS="--preview-window=right:60% --height 100% --layout reverse-list --preview '(bat --color=always --style=numbers --line-range :500 {} || eza -T --color=always {}) 2> /dev/null'"
@@ -33,10 +32,12 @@ alias pya="pyact"
 alias pyin="./.venv/bin/python -m pip install -r requirements-dev.txt 2> /dev/null || ./.venv/bin/python -m pip install -r requirements_dev.txt 2> /dev/null || ./.venv/bin/python -m pip install -r requirements.txt 2> /dev/null || echo 'No requirements file.'"
 alias dea="deactivate"
 alias nuke-venv="deactivate 2>/dev/null || true && rm -rf .venv"
+alias django="python manage.py"
+alias dj="django"
 
 # source $HOME/.poetry/env
 alias po="poetry"
-alias poed="poetry run lvim"
+alias poed="poetry run nvim"
 export PATH="$HOME/.poetry/bin:$PATH"
 
 export PATH="/opt/homebrew/bin:$PATH"
@@ -241,7 +242,7 @@ eval "$(zoxide init zsh)"
 #
 eval "$(pyenv init -)"
 
-# lvim, python executables end up here
+# python executables end up here
 export PATH="$HOME/.local/bin:$PATH"
 
 # settings for zsh-vi-mode

@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
-mkdir -p ~/.config/lvim  # covers ~/.config as well
+mkdir -p ~/.config/nvim
 
-envsubst < symlinks.txt | while IFS=' | ' read -r source target; do
+envsubst <symlinks.txt | while IFS=' | ' read -r source target; do
   if [[ ! -f "$source" ]]; then
     echo "❌ No such file '$source'"
     exit 1
